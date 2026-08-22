@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gõ Việt 10 Ngón — Luyện Phím & Thần Công Bắn Chữ</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -21,11 +20,9 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
 
-  <!-- ================= HEADER CHUNG ================= -->
+  <!-- HEADER -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-      
-      <!-- Logo -->
       <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('practice')">
         <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md font-bold text-xl">
           <i class="fa-solid fa-keyboard"></i>
@@ -36,7 +33,7 @@
         </div>
       </div>
 
-      <!-- Navigation Tabs Chuyển đổi giữa 2 chế độ -->
+      <!-- Navigation Tabs -->
       <nav class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
         <button id="nav-btn-practice" onclick="switchView('practice')" class="px-4 py-1.5 rounded-lg font-bold text-sm transition bg-white text-indigo-600 shadow-sm">
           <i class="fa-solid fa-book-open-reader mr-1"></i> Luyện Tập Bài Gõ
@@ -47,29 +44,23 @@
       </nav>
 
       <!-- Auth State Control -->
-      <!-- Auth State Control -->
       <div id="auth-controls" class="flex items-center space-x-3">
-        <!-- Nút hiển thị khi chưa đăng nhập -->
         <button id="btn-open-login" onclick="openModal('auth-modal')" class="px-3.5 py-1.5 text-xs font-bold text-indigo-600 hover:bg-indigo-50 border border-indigo-200 rounded-lg transition flex items-center">
           <i class="fa-solid fa-user mr-1.5"></i> Phụ Huynh Đăng Nhập
         </button>
 
-        <!-- Khung hiển thị Tên Phụ Huynh & Danh Sách Bé khi đã đăng nhập -->
         <div id="user-profile-badge" class="hidden items-center space-x-2 bg-indigo-50/80 px-3 py-1.5 rounded-xl border border-indigo-100 shadow-sm">
           <div class="text-right">
             <span id="display-parent-name" class="block text-[11px] text-slate-500 font-bold leading-tight">PH: Ba Kiên</span>
             <div class="flex items-center space-x-1">
               <select id="child-select" onchange="onChildChanged()" class="text-xs font-extrabold text-indigo-700 bg-white border border-indigo-200 rounded px-2 py-0.5 outline-none cursor-pointer">
-                <!-- Danh sách hồ sơ bé -->
               </select>
             </div>
           </div>
-
-          <button onclick="openModal('add-child-modal')" title="Thêm hồ sơ bé mới" class="w-7 h-7 rounded-lg bg-white hover:bg-indigo-600 text-slate-600 hover:text-white border border-indigo-200 flex items-center justify-center transition shadow-xs">
+          <button onclick="openModal('add-child-modal')" title="Thêm hồ sơ bé" class="w-7 h-7 rounded-lg bg-white hover:bg-indigo-600 text-slate-600 hover:text-white border border-indigo-200 flex items-center justify-center transition">
             <i class="fa-solid fa-plus text-xs"></i>
           </button>
-          
-          <button onclick="logout()" title="Đăng xuất" class="w-7 h-7 rounded-lg bg-white hover:bg-red-500 text-slate-400 hover:text-white border border-slate-200 flex items-center justify-center transition shadow-xs">
+          <button onclick="logout()" title="Đăng xuất" class="w-7 h-7 rounded-lg bg-white hover:bg-red-500 text-slate-400 hover:text-white border border-slate-200 flex items-center justify-center transition">
             <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
           </button>
         </div>
@@ -77,16 +68,14 @@
     </div>
   </header>
 
-  <!-- ================= CHẾ ĐỘ 1: LUYỆN TẬP GÕ 10 NGÓN ================= -->
+  <!-- VIEW 1: PRACTICE -->
   <main id="view-practice" class="max-w-5xl mx-auto px-4 py-6 flex-1 w-full">
     <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center space-x-4">
         <div>
           <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chủ đề bài học</label>
           <select id="lesson-category" onchange="onCategoryChanged()" class="bg-slate-100 border border-slate-300 font-bold text-slate-700 rounded-xl px-3 py-2 text-sm outline-none">
-            <option value="daoduc">🌿 Bài học Đạo đức & Nhân cách</option>
-            <option value="cadao">🇻🇳 Ca dao, Tục ngữ Việt Nam</option>
-            <option value="coban">⌨️ Hàng phím cơ sở</option>
+            <!-- Nạp động từ lessons.json -->
           </select>
         </div>
         <div>
@@ -114,12 +103,11 @@
       </div>
     </div>
 
-    <!-- Khung gõ bài -->
+    <!-- Khung gõ -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-6">
       <div id="lesson-meaning" class="mb-4 text-xs font-bold px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg inline-flex items-center">
         <i class="fa-solid fa-lightbulb mr-2"></i> Ý nghĩa: Đang tải...
       </div>
-
       <div id="text-display" class="text-2xl leading-relaxed font-semibold tracking-wide select-none min-h-[90px] p-4 bg-slate-50 rounded-xl border border-slate-200 break-words">
       </div>
       <input type="text" id="typing-input" class="opacity-0 absolute -z-10">
@@ -132,7 +120,7 @@
       </div>
     </div>
 
-    <!-- Bàn phím ảo trực quan -->
+    <!-- Bàn phím ảo -->
     <div class="bg-slate-900 rounded-2xl p-6 shadow-xl border border-slate-800 text-slate-200">
       <div class="flex justify-between items-center mb-3">
         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mô phỏng bàn phím 10 ngón</span>
@@ -187,7 +175,7 @@
           <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="l">L</div>
           <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key=";">;</div>
           <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="'">'</div>
-          <div class="key w-16 h-10 rounded bg-indigo-600 border border-indigo-500 flex items-center justify-center" data-key="Enter">Enter</div>
+          <div class="key w-16 h-10 rounded bg-indigo-600 border border-indigo-500 flex items-center justify-center font-bold" data-key="Enter">Enter</div>
         </div>
         <div class="flex gap-1.5">
           <div class="key w-20 h-10 rounded bg-slate-700 border border-slate-600 flex items-center justify-center" data-key="Shift">Shift</div>
@@ -210,9 +198,8 @@
     </div>
   </main>
 
-  <!-- ================= CHẾ ĐỘ 2: MINI GAME THẦN CÔNG ================= -->
+  <!-- VIEW 2: GAME -->
   <main id="view-game" class="max-w-4xl mx-auto px-4 py-4 flex-1 w-full hidden">
-    <!-- Top Game Bar -->
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between shadow-lg mb-3">
       <div class="flex items-center space-x-3">
         <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-slate-950 font-black text-xl shadow-md">
@@ -223,7 +210,6 @@
           <p class="text-xs text-slate-400 font-bold" id="game-level-title">Màn 1: Cổ Loa Xuất Trận</p>
         </div>
       </div>
-
       <div class="flex items-center space-x-6 text-center">
         <div>
           <span class="text-xs text-slate-400 block font-bold">Mạng</span>
@@ -242,21 +228,16 @@
       </div>
     </div>
 
-    <!-- Dải câu danh ngôn trọn vẹn -->
     <div class="bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-xl mb-3 flex items-center shadow-inner">
       <span class="text-xs font-black text-amber-500 uppercase mr-3 whitespace-nowrap"><i class="fa-solid fa-book-open mr-1"></i> Trọn câu:</span>
       <div id="game-sentence-display" class="flex flex-wrap gap-2 text-sm font-extrabold tracking-wide"></div>
     </div>
 
-    <!-- Canvas Viewport -->
     <div class="relative flex flex-col items-center">
       <div id="jammed-banner" class="hidden absolute top-6 bg-red-600/95 backdrop-blur-md text-white px-6 py-2 rounded-full font-black text-sm uppercase tracking-widest shadow-2xl animate-pulse z-20 border border-red-300">
         ⚠️ SÚNG BỊ HÓC! BẤM [SPACE] HOẶC [ENTER] ĐỂ THÔNG NÒNG!
       </div>
-
       <canvas id="gameCanvas" width="800" height="380" class="rounded-2xl border-2 border-slate-800 shadow-2xl w-full"></canvas>
-
-      <!-- Hộp tiếp đạn và ô gõ Unikey -->
       <div class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 mt-3 flex items-center justify-between shadow-xl">
         <div class="flex items-center space-x-3">
           <span class="text-xs font-black uppercase text-amber-500 tracking-wider">Mục Tiêu:</span>
@@ -264,7 +245,6 @@
             ---
           </div>
         </div>
-
         <div class="flex items-center space-x-3">
           <span class="text-xs font-bold text-slate-400">Đang gõ:</span>
           <input type="text" id="game-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" 
@@ -275,19 +255,14 @@
     </div>
   </main>
 
-  <!-- ================= FOOTER / LIÊN HỆ & PHỄU CHUYỂN ĐỔI SỐ ================= -->
+  <!-- FOOTER -->
   <footer class="bg-white border-t border-slate-200 mt-10 py-6">
     <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-      
-      <!-- Cột trái: Giới thiệu thương hiệu -->
       <div>
         <p class="font-bold text-slate-800 text-sm">App Tinh Gọn — Giải Pháp Chuyển Đổi Số</p>
         <p class="text-slate-600">Đồng hành cùng Doanh nghiệp siêu nhỏ & Hộ kinh doanh: Tối ưu quy trình — Tự động hóa — Chi phí hợp lý.</p>
       </div>
-
-      <!-- Cột phải: Link Kênh + Thông tin liên hệ Zalo -->
       <div class="flex flex-col md:items-end gap-2">
-        <!-- 3 Nút Mạng Xã Hội -->
         <div class="flex items-center space-x-4">
           <a href="https://www.youtube.com/@Apptinhg%E1%BB%8Dn" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-red-600 font-bold transition flex items-center">
             <i class="fa-brands fa-youtube mr-1 text-sm text-red-600"></i> YouTube Channel
@@ -299,8 +274,6 @@
             <i class="fa-brands fa-facebook mr-1 text-sm text-blue-600"></i> Facebook
           </a>
         </div>
-
-        <!-- Thông tin liên hệ trực tiếp Zalo -->
         <div class="flex items-center text-slate-700 font-bold bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
           <a href="https://zalo.me/0916887359" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 transition flex items-center">
             <i class="fa-solid fa-phone-volume text-indigo-600 mr-2 animate-pulse"></i>
@@ -308,12 +281,10 @@
           </a>
         </div>
       </div>
-
     </div>
   </footer>
 
-  <!-- ================= MODALS (AUTH & RESULT) ================= -->
-  <!-- Auth Modal -->
+  <!-- MODALS -->
   <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl">
       <div class="flex justify-between items-center mb-4">
@@ -341,7 +312,6 @@
     </div>
   </div>
 
-  <!-- Modal Thêm Bé -->
   <div id="add-child-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl">
       <div class="flex justify-between items-center mb-4">
@@ -364,7 +334,6 @@
     </div>
   </div>
 
-  <!-- Modal Kết quả bài gõ -->
   <div id="result-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl">
       <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
@@ -372,7 +341,6 @@
       </div>
       <h3 class="font-extrabold text-2xl text-slate-800 mb-1">Hoàn Thành Bài Tập!</h3>
       <p class="text-xs text-slate-500 mb-6">Tiến trình đã được lưu vào hệ thống Google Sheets.</p>
-      
       <div class="grid grid-cols-2 gap-3 mb-6">
         <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
           <div class="text-xs text-slate-500 font-bold">Tốc độ</div>
@@ -383,7 +351,6 @@
           <div id="res-accuracy" class="text-2xl font-black text-emerald-600">0%</div>
         </div>
       </div>
-
       <button onclick="closeModal('result-modal'); nextLesson();" class="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition shadow-lg mb-2">
         Học Bài Tiếp Theo <i class="fa-solid fa-arrow-right ml-1"></i>
       </button>
@@ -393,46 +360,22 @@
     </div>
   </div>
 
-  <!-- ================= JAVASCRIPT HỢP NHẤT ================= -->
+  <!-- SCRIPT LOGIC VỚI FETCH JSON -->
   <script>
-    // -------------------------------------------------------------
-    // CẤU HÌNH API
-    // -------------------------------------------------------------
     const API_URL = "https://script.google.com/macros/s/AKfycbz_YOUR_SCRIPT_ID_HERE/exec";
 
-    // -------------------------------------------------------------
-    // DỮ LIỆU BÀI TẬP VÀ GAME LEVELS
-    // -------------------------------------------------------------
-    const LESSON_DATABASE = {
-      daoduc: [
-        { id: "DD01", levelId: "L01", title: "Lời chào và sự tôn trọng", text: "Lời chào đi trước nụ cười theo sau. Kính trọng người lớn tuổi là nét đẹp của người con ngoan.", meaning: "Dạy bé luôn biết chào hỏi lễ phép với ông bà, cha mẹ và thầy cô." },
-        { id: "DD02", levelId: "L01", title: "Lòng trung thực", text: "Cây ngay không sợ chết đứng. Sống trung thực giúp tâm hồn luôn thanh thản và được tin yêu.", meaning: "Giáo dục tính trung thực, không bao giờ nói dối." }
-      ],
-      cadao: [
-        { id: "CD01", levelId: "L01", title: "Bầu ơi thương lấy bí cùng", text: "Bầu ơi thương lấy bí cùng, tuy rằng khác giống nhưng chung một giàn.", meaning: "Tinh thần đoàn kết, sẻ chia và giúp đỡ những người xung quanh." }
-      ],
-      coban: [
-        { id: "CB01", levelId: "L01", title: "Hàng phím cơ sở", text: "asdf jkl; asdf jkl; aass ddff jjkk ll;;", meaning: "Luyện tập đặt ngón tay chuẩn xác trên hàng phím cơ sở." }
-      ]
-    };
+    // DATABASE DYNAMIC
+    let LESSONS_DATA = {};
+    let GAME_LEVELS_DATA = [];
 
-    const GAME_LEVELS = [
-      { levelId: "L01", title: "Màn 1: Cổ Loa Xuất Trận", quote: "Lời chào cao hơn mâm cỗ", speed: 0.6 },
-      { levelId: "L02", title: "Màn 2: Rèn Đức Luyện Tài", quote: "Học đi đôi với hành rèn đức luyện tài", speed: 0.9 },
-      { levelId: "L03", title: "Màn 3: Uống Nước Nhớ Nguồn", quote: "Uống nước nhớ nguồn ăn quả nhớ kẻ trồng cây", speed: 1.2 }
-    ];
-
-    // -------------------------------------------------------------
-    // STATE TOÀN CỤC
-    // -------------------------------------------------------------
     let currentView = "practice";
     let state = {
       token: localStorage.getItem("gv_token") || null,
       parent: JSON.parse(localStorage.getItem("gv_parent") || "null"),
       children: [],
-      activeChildId: null,
+      activeChildId: localStorage.getItem("gv_active_child") || null,
 
-      currentCategory: "daoduc",
+      currentCategory: "kinhdien",
       currentLessonIndex: 0,
       currentLesson: null,
       currentSessionId: null,
@@ -445,9 +388,29 @@
       isAuthRegisterMode: false
     };
 
-    // -------------------------------------------------------------
-    // ĐIỀU HƯỚNG VIEW (PRACTICE vs GAME)
-    // -------------------------------------------------------------
+    // NẠP DỮ LIỆU TỪ DATABASE JSON
+    async function loadDatabaseFiles() {
+      try {
+        const [resLessons, resGame] = await Promise.all([
+          fetch("./data/lessons.json"),
+          fetch("./data/game_levels.json")
+        ]);
+        LESSONS_DATA = await resLessons.json();
+        GAME_LEVELS_DATA = await resGame.json();
+      } catch (err) {
+        console.error("Không tải được file JSON, sử dụng fallback memory:", err);
+        LESSONS_DATA = {
+          kinhdien: {
+            title: "📜 Văn Học Kinh Điển",
+            lessons: [{ id: "VH01", levelId: "L01", title: "Nam Quốc Sơn Hà", text: "Nam quốc sơn hà Nam đế cư, tiệt nhiên định phận tại thiên thư.", meaning: "Khẳng định chủ quyền độc lập dân tộc." }]
+          }
+        };
+        GAME_LEVELS_DATA = [{ levelId: "L01", title: "Màn 1", quote: "Nam quốc sơn hà", speed: 0.6 }];
+      }
+
+      initPracticeModule();
+    }
+
     function switchView(viewName) {
       currentView = viewName;
       const practiceEl = document.getElementById("view-practice");
@@ -470,30 +433,45 @@
       }
     }
 
-    // -------------------------------------------------------------
-    // 1. MODULE LUYỆN TẬP GÕ (PRACTICE)
-    // -------------------------------------------------------------
+    // PRACTICE ENGINE
     function initPracticeModule() {
       renderCategorySelect();
-      loadLesson(0);
+      const categories = Object.keys(LESSONS_DATA);
+      if (categories.length > 0) {
+        state.currentCategory = categories[0];
+        document.getElementById("lesson-category").value = state.currentCategory;
+        renderLessonSelect();
+        loadLesson(0);
+      }
       setupPracticeKeyListeners();
     }
 
     function renderCategorySelect() {
-      const cat = state.currentCategory;
-      const lessonSelect = document.getElementById("lesson-item");
-      lessonSelect.innerHTML = "";
-      LESSON_DATABASE[cat].forEach((l, index) => {
+      const select = document.getElementById("lesson-category");
+      select.innerHTML = "";
+      Object.keys(LESSONS_DATA).forEach(catKey => {
+        const opt = document.createElement("option");
+        opt.value = catKey;
+        opt.innerText = LESSONS_DATA[catKey].title;
+        select.appendChild(opt);
+      });
+    }
+
+    function renderLessonSelect() {
+      const select = document.getElementById("lesson-item");
+      select.innerHTML = "";
+      const list = LESSONS_DATA[state.currentCategory]?.lessons || [];
+      list.forEach((l, index) => {
         const opt = document.createElement("option");
         opt.value = index;
         opt.innerText = `Bài ${index + 1}: ${l.title}`;
-        lessonSelect.appendChild(opt);
+        select.appendChild(opt);
       });
     }
 
     function onCategoryChanged() {
       state.currentCategory = document.getElementById("lesson-category").value;
-      renderCategorySelect();
+      renderLessonSelect();
       loadLesson(0);
     }
 
@@ -504,7 +482,8 @@
 
     function loadLesson(index) {
       state.currentLessonIndex = index;
-      state.currentLesson = LESSON_DATABASE[state.currentCategory][index];
+      const list = LESSONS_DATA[state.currentCategory]?.lessons || [];
+      state.currentLesson = list[index] || { text: "", meaning: "" };
       document.getElementById("lesson-meaning").innerHTML = `<i class="fa-solid fa-lightbulb mr-2"></i> Ý nghĩa: ${state.currentLesson.meaning}`;
       resetCurrentLesson();
     }
@@ -649,16 +628,14 @@
     }
 
     function nextLesson() {
-      const list = LESSON_DATABASE[state.currentCategory];
+      const list = LESSONS_DATA[state.currentCategory]?.lessons || [];
       if (state.currentLessonIndex + 1 < list.length) {
         document.getElementById("lesson-item").value = state.currentLessonIndex + 1;
         loadLesson(state.currentLessonIndex + 1);
       }
     }
 
-    // -------------------------------------------------------------
-    // 2. MODULE MINI GAME THẦN CÔNG CANVAS
-    // -------------------------------------------------------------
+    // GAME ENGINE
     let gameCanvas, gameCtx, gameInputEl;
     let gameAnimationId = null;
     let gameCurrentLevelIdx = 0;
@@ -692,7 +669,7 @@
 
     function startGameLevel(lvlIdx) {
       gameCurrentLevelIdx = lvlIdx;
-      const level = GAME_LEVELS[lvlIdx];
+      const level = GAME_LEVELS_DATA[lvlIdx] || { title: "Màn chơi", quote: "Việt Nam", speed: 0.6 };
       document.getElementById("game-level-title").innerText = level.title;
 
       const words = level.quote.split(" ");
@@ -763,7 +740,6 @@
       if (currentView !== "game") return;
 
       gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-
       drawGameWordChain();
       drawGameCannon();
       drawGameBullets();
@@ -827,7 +803,7 @@
     }
 
     function updateGamePhysics() {
-      const speed = GAME_LEVELS[gameCurrentLevelIdx].speed;
+      const speed = GAME_LEVELS_DATA[gameCurrentLevelIdx]?.speed || 0.6;
       gameWordChain.forEach(item => { if (!item.hit) item.x -= speed; });
 
       if (gameTargetIdx < gameWordChain.length) {
@@ -993,7 +969,7 @@
           token: state.token,
           learningSessionId: state.currentSessionId,
           childId: state.activeChildId,
-          levelId: GAME_LEVELS[gameCurrentLevelIdx].levelId,
+          levelId: GAME_LEVELS_DATA[gameCurrentLevelIdx]?.levelId || "L01",
           lessonId: "",
           result: isWin ? "WIN" : "LOSE",
           accuracy: acc,
@@ -1012,12 +988,10 @@
       return (str || "").toLowerCase().replace(/[,.!?;:]/g, "");
     }
 
-    // -------------------------------------------------------------
-    // 3. API & AUTHENTICATION
-    // -------------------------------------------------------------
+    // AUTHENTICATION & SYNC
     async function callApi(payload) {
       if (API_URL.includes("YOUR_SCRIPT_ID_HERE")) {
-        console.warn("Chưa cấu hình API_URL. Chạy chế độ demo.");
+        console.warn("Chế độ Local Demo");
         return { success: true, data: { demo: true } };
       }
       try {
@@ -1053,9 +1027,7 @@
         btnOpenLogin.classList.add("hidden");
         userBadge.classList.remove("hidden");
         userBadge.classList.add("flex");
-        if (displayNameEl) {
-          displayNameEl.innerText = `PH: ${state.parent.username}`;
-        }
+        if (displayNameEl) displayNameEl.innerText = `PH: ${state.parent.username}`;
       } else {
         btnOpenLogin.classList.remove("hidden");
         userBadge.classList.add("hidden");
@@ -1097,33 +1069,27 @@
     }
 
     async function fetchChildrenList() {
-      // 1. Kiểm tra cache localStorage trước để hiển thị ngay lập tức khi load trang
-      const cachedChildren = JSON.parse(localStorage.getItem("gv_children") || "[]");
-      if (cachedChildren.length > 0) {
-        state.children = cachedChildren;
+      const cached = JSON.parse(localStorage.getItem("gv_children") || "[]");
+      if (cached.length > 0) {
+        state.children = cached;
         renderChildrenDropdown();
       }
 
-      // 2. Gọi API để đồng bộ dữ liệu mới nhất từ Google Sheets
       const res = await callApi({ action: "getChildren", token: state.token });
-      
       if (res.success) {
         if (res.data?.children && res.data.children.length > 0) {
           state.children = res.data.children;
         } else if (res.data?.demo) {
-          // Dữ liệu mẫu khi chạy Local chưa gắn API Google Sheets
           state.children = [
             { childId: "C000001", childName: "Bé Milo", age: 9 },
             { childId: "C000002", childName: "Bé Mina", age: 5 }
           ];
         } else {
-          // Chưa có bé nào trong tài khoản
           state.children = [];
           openModal("add-child-modal");
           return;
         }
 
-        // Lưu vào cache
         localStorage.setItem("gv_children", JSON.stringify(state.children));
         renderChildrenDropdown();
       }
@@ -1139,13 +1105,11 @@
         return;
       }
 
-      state.children.forEach((c) => {
+      state.children.forEach(c => {
         const opt = document.createElement("option");
         opt.value = c.childId;
         opt.innerText = `Bé: ${c.childName} (${c.age}t)`;
-        if (state.activeChildId === c.childId) {
-          opt.selected = true;
-        }
+        if (state.activeChildId === c.childId) opt.selected = true;
         select.appendChild(opt);
       });
 
@@ -1168,7 +1132,6 @@
 
       const res = await callApi({ action: "createChild", token: state.token, childName: name, age: age });
       if (res.success) {
-        // Thêm vào state local
         const newChild = {
           childId: res.data?.childId || "C" + Date.now().toString().slice(-6),
           childName: name,
@@ -1178,7 +1141,6 @@
         state.activeChildId = newChild.childId;
         localStorage.setItem("gv_children", JSON.stringify(state.children));
         localStorage.setItem("gv_active_child", state.activeChildId);
-        
         closeModal("add-child-modal");
         renderChildrenDropdown();
       }
@@ -1199,16 +1161,11 @@
     function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
     function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
 
-    // -------------------------------------------------------------
-    // KHỞI ĐỘNG ỨNG DỤNG
-    // -------------------------------------------------------------
+    // ENTRY POINT
     document.addEventListener("DOMContentLoaded", () => {
-      state.activeChildId = localStorage.getItem("gv_active_child") || null;
-      initPracticeModule();
+      loadDatabaseFiles();
       updateAuthUI();
-      if (state.token) {
-        fetchChildrenList();
-      }
+      if (state.token) fetchChildrenList();
     });
   </script>
 </body>
