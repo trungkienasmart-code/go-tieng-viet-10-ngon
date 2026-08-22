@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gõ Việt 10 Ngón — Luyện Phím & Thần Công Bắn Chữ</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    body { font-family: 'Nunito', sans-serif; }
+    .key-active { background-color: #3b82f6 !important; color: white !important; transform: scale(0.95); }
+    .key-target { background-color: #fef08a !important; color: #854d0e !important; border: 2px solid #eab308 !important; animation: pulse 1.5s infinite; }
+    .char-correct { color: #16a34a; }
+    .char-incorrect { color: #dc2626; background-color: #fee2e2; border-radius: 2px; }
+    .char-current { border-left: 2px solid #2563eb; animation: blink 1s infinite; background-color: #e0e7ff; }
+    @keyframes blink { 0%, 100% { border-color: transparent; } 50% { border-color: #2563eb; } }
+    canvas { background: radial-gradient(circle, #1e293b 0%, #0f172a 100%); }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+  <!-- ================= HEADER CHUNG ================= -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('practice')">
+        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md font-bold text-xl">
+          <i class="fa-solid fa-keyboard"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-slate-900 leading-tight">Gõ Việt 10 Ngón</h1>
+          <p class="text-xs text-indigo-600 font-semibold">Luyện phím chuẩn & Rèn đức hạnh</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs Chuyển đổi giữa 2 chế độ -->
+      <nav class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+        <button id="nav-btn-practice" onclick="switchView('practice')" class="px-4 py-1.5 rounded-lg font-bold text-sm transition bg-white text-indigo-600 shadow-sm">
+          <i class="fa-solid fa-book-open-reader mr-1"></i> Luyện Tập Bài Gõ
+        </button>
+        <button id="nav-btn-game" onclick="switchView('game')" class="px-4 py-1.5 rounded-lg font-bold text-sm transition text-slate-600 hover:text-indigo-600">
+          <i class="fa-solid fa-gamepad mr-1"></i> Mini Game Thần Công
+        </button>
+      </nav>
+
+      <!-- Auth State Control -->
+      <!-- Auth State Control -->
+      <div id="auth-controls" class="flex items-center space-x-3">
+        <!-- Nút hiển thị khi chưa đăng nhập -->
+        <button id="btn-open-login" onclick="openModal('auth-modal')" class="px-3.5 py-1.5 text-xs font-bold text-indigo-600 hover:bg-indigo-50 border border-indigo-200 rounded-lg transition flex items-center">
+          <i class="fa-solid fa-user mr-1.5"></i> Phụ Huynh Đăng Nhập
+        </button>
+
+        <!-- Khung hiển thị Tên Phụ Huynh & Danh Sách Bé khi đã đăng nhập -->
+        <div id="user-profile-badge" class="hidden items-center space-x-2 bg-indigo-50/80 px-3 py-1.5 rounded-xl border border-indigo-100 shadow-sm">
+          <div class="text-right">
+            <span id="display-parent-name" class="block text-[11px] text-slate-500 font-bold leading-tight">PH: Ba Kiên</span>
+            <div class="flex items-center space-x-1">
+              <select id="child-select" onchange="onChildChanged()" class="text-xs font-extrabold text-indigo-700 bg-white border border-indigo-200 rounded px-2 py-0.5 outline-none cursor-pointer">
+                <!-- Danh sách hồ sơ bé -->
+              </select>
+            </div>
+          </div>
+
+          <button onclick="openModal('add-child-modal')" title="Thêm hồ sơ bé mới" class="w-7 h-7 rounded-lg bg-white hover:bg-indigo-600 text-slate-600 hover:text-white border border-indigo-200 flex items-center justify-center transition shadow-xs">
+            <i class="fa-solid fa-plus text-xs"></i>
+          </button>
+          
+          <button onclick="logout()" title="Đăng xuất" class="w-7 h-7 rounded-lg bg-white hover:bg-red-500 text-slate-400 hover:text-white border border-slate-200 flex items-center justify-center transition shadow-xs">
+            <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= CHẾ ĐỘ 1: LUYỆN TẬP GÕ 10 NGÓN ================= -->
+  <main id="view-practice" class="max-w-5xl mx-auto px-4 py-6 flex-1 w-full">
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chủ đề bài học</label>
+          <select id="lesson-category" onchange="onCategoryChanged()" class="bg-slate-100 border border-slate-300 font-bold text-slate-700 rounded-xl px-3 py-2 text-sm outline-none">
+            <option value="daoduc">🌿 Bài học Đạo đức & Nhân cách</option>
+            <option value="cadao">🇻🇳 Ca dao, Tục ngữ Việt Nam</option>
+            <option value="coban">⌨️ Hàng phím cơ sở</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Bài số</label>
+          <select id="lesson-item" onchange="onLessonChanged()" class="bg-slate-100 border border-slate-300 font-bold text-slate-700 rounded-xl px-3 py-2 text-sm outline-none">
+          </select>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-6 bg-slate-50 px-5 py-2 rounded-xl border border-slate-200 text-center">
+        <div>
+          <div class="text-xs text-slate-500 font-bold">TỐC ĐỘ (WPM)</div>
+          <div id="stat-wpm" class="text-xl font-extrabold text-indigo-600">0</div>
+        </div>
+        <div class="w-px h-8 bg-slate-200"></div>
+        <div>
+          <div class="text-xs text-slate-500 font-bold">CHÍNH XÁC</div>
+          <div id="stat-accuracy" class="text-xl font-extrabold text-emerald-600">100%</div>
+        </div>
+        <div class="w-px h-8 bg-slate-200"></div>
+        <div>
+          <div class="text-xs text-slate-500 font-bold">THỜI GIAN</div>
+          <div id="stat-timer" class="text-xl font-extrabold text-slate-700">00:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Khung gõ bài -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-6">
+      <div id="lesson-meaning" class="mb-4 text-xs font-bold px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg inline-flex items-center">
+        <i class="fa-solid fa-lightbulb mr-2"></i> Ý nghĩa: Đang tải...
+      </div>
+
+      <div id="text-display" class="text-2xl leading-relaxed font-semibold tracking-wide select-none min-h-[90px] p-4 bg-slate-50 rounded-xl border border-slate-200 break-words">
+      </div>
+      <input type="text" id="typing-input" class="opacity-0 absolute -z-10">
+      
+      <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+        <span><i class="fa-solid fa-arrow-pointer mr-1"></i> Bấm vào khung hoặc gõ phím bất kỳ để bắt đầu</span>
+        <button onclick="resetCurrentLesson()" class="text-indigo-600 hover:text-indigo-800 font-bold">
+          <i class="fa-solid fa-rotate-right mr-1"></i> Gõ lại từ đầu
+        </button>
+      </div>
+    </div>
+
+    <!-- Bàn phím ảo trực quan -->
+    <div class="bg-slate-900 rounded-2xl p-6 shadow-xl border border-slate-800 text-slate-200">
+      <div class="flex justify-between items-center mb-3">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mô phỏng bàn phím 10 ngón</span>
+        <span id="finger-instruction" class="text-xs font-bold px-2 py-1 bg-indigo-600 text-white rounded">
+          Đặt ngón trỏ vào F và J
+        </span>
+      </div>
+
+      <div class="flex flex-col items-center gap-1.5 select-none text-xs font-bold" id="keyboard-wrapper">
+        <div class="flex gap-1.5">
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="`">~</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="1">1</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="2">2</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="3">3</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="4">4</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="5">5</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="6">6</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="7">7</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="8">8</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="9">9</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="0">0</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="-">-</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="=">=</div>
+          <div class="key w-16 h-10 rounded bg-slate-700 border border-slate-600 flex items-center justify-center" data-key="Backspace">⌫</div>
+        </div>
+        <div class="flex gap-1.5">
+          <div class="key w-14 h-10 rounded bg-slate-700 border border-slate-600 flex items-center justify-center" data-key="Tab">Tab</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="q">Q</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="w">W</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="e">E</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="r">R</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="t">T</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="y">Y</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="u">U</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="i">I</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="o">O</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="p">P</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="[">[</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="]">]</div>
+          <div class="key w-12 h-10 rounded bg-slate-700 border border-slate-600 flex items-center justify-center" data-key="\">\</div>
+        </div>
+        <div class="flex gap-1.5">
+          <div class="key w-16 h-10 rounded bg-slate-700 border border-slate-600 flex items-center justify-center" data-key="CapsLock">Caps</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="a">A</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="s">S</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="d">D</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border-2 border-indigo-500/50 flex items-center justify-center relative" data-key="f">F<span class="absolute bottom-0.5 w-2 h-0.5 bg-indigo-400"></span></div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="g">G</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="h">H</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border-2 border-indigo-500/50 flex items-center justify-center relative" data-key="j">J<span class="absolute bottom-0.5 w-2 h-0.5 bg-indigo-400"></span></div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="k">K</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="l">L</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key=";">;</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="'">'</div>
+          <div class="key w-16 h-10 rounded bg-indigo-600 border border-indigo-500 flex items-center justify-center" data-key="Enter">Enter</div>
+        </div>
+        <div class="flex gap-1.5">
+          <div class="key w-20 h-10 rounded bg-slate-700 border border-slate-600 flex items-center justify-center" data-key="Shift">Shift</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="z">Z</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="x">X</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="c">C</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="v">V</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="b">B</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="n">N</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="m">M</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key=",">,</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key=".">.</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="/">/</div>
+          <div class="key w-20 h-10 rounded bg-slate-700 border border-slate-600 flex items-center justify-center" data-key="Shift">Shift</div>
+        </div>
+        <div class="flex gap-1.5 w-full justify-center">
+          <div class="key w-64 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key=" ">Space (Dấu cách)</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= CHẾ ĐỘ 2: MINI GAME THẦN CÔNG ================= -->
+  <main id="view-game" class="max-w-4xl mx-auto px-4 py-4 flex-1 w-full hidden">
+    <!-- Top Game Bar -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between shadow-lg mb-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-slate-950 font-black text-xl shadow-md">
+          <i class="fa-solid fa-crosshairs"></i>
+        </div>
+        <div>
+          <h2 class="text-base font-black text-amber-400 leading-tight">Thần Công Luyện Chữ</h2>
+          <p class="text-xs text-slate-400 font-bold" id="game-level-title">Màn 1: Cổ Loa Xuất Trận</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-6 text-center">
+        <div>
+          <span class="text-xs text-slate-400 block font-bold">Mạng</span>
+          <div id="game-ui-lives" class="text-amber-500 text-lg font-black">❤️❤️❤️</div>
+        </div>
+        <div class="w-px h-8 bg-slate-800"></div>
+        <div>
+          <span class="text-xs text-slate-400 block font-bold">Điểm số</span>
+          <div id="game-ui-score" class="text-xl font-black text-emerald-400">0</div>
+        </div>
+        <div class="w-px h-8 bg-slate-800"></div>
+        <div>
+          <span class="text-xs text-slate-400 block font-bold">Chính xác</span>
+          <div id="game-ui-accuracy" class="text-xl font-black text-indigo-400">100%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dải câu danh ngôn trọn vẹn -->
+    <div class="bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-xl mb-3 flex items-center shadow-inner">
+      <span class="text-xs font-black text-amber-500 uppercase mr-3 whitespace-nowrap"><i class="fa-solid fa-book-open mr-1"></i> Trọn câu:</span>
+      <div id="game-sentence-display" class="flex flex-wrap gap-2 text-sm font-extrabold tracking-wide"></div>
+    </div>
+
+    <!-- Canvas Viewport -->
+    <div class="relative flex flex-col items-center">
+      <div id="jammed-banner" class="hidden absolute top-6 bg-red-600/95 backdrop-blur-md text-white px-6 py-2 rounded-full font-black text-sm uppercase tracking-widest shadow-2xl animate-pulse z-20 border border-red-300">
+        ⚠️ SÚNG BỊ HÓC! BẤM [SPACE] HOẶC [ENTER] ĐỂ THÔNG NÒNG!
+      </div>
+
+      <canvas id="gameCanvas" width="800" height="380" class="rounded-2xl border-2 border-slate-800 shadow-2xl w-full"></canvas>
+
+      <!-- Hộp tiếp đạn và ô gõ Unikey -->
+      <div class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 mt-3 flex items-center justify-between shadow-xl">
+        <div class="flex items-center space-x-3">
+          <span class="text-xs font-black uppercase text-amber-500 tracking-wider">Mục Tiêu:</span>
+          <div id="ammo-word" class="text-2xl font-black text-white bg-slate-950 px-4 py-1.5 rounded-xl border border-slate-700 tracking-wide">
+            ---
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <span class="text-xs font-bold text-slate-400">Đang gõ:</span>
+          <input type="text" id="game-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" 
+                 placeholder="Gõ từ tại đây..." 
+                 class="text-lg font-bold text-emerald-400 bg-slate-950 px-4 py-1.5 rounded-xl border-2 border-indigo-500/50 outline-none focus:border-indigo-400 w-56 text-center">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= FOOTER / LIÊN HỆ & PHỄU CHUYỂN ĐỔI SỐ ================= -->
+  <footer class="bg-white border-t border-slate-200 mt-10 py-6">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      
+      <!-- Cột trái: Giới thiệu thương hiệu -->
+      <div>
+        <p class="font-bold text-slate-800 text-sm">App Tinh Gọn — Giải Pháp Chuyển Đổi Số</p>
+        <p class="text-slate-600">Đồng hành cùng Doanh nghiệp siêu nhỏ & Hộ kinh doanh: Tối ưu quy trình — Tự động hóa — Chi phí hợp lý.</p>
+      </div>
+
+      <!-- Cột phải: Link Kênh + Thông tin liên hệ Zalo -->
+      <div class="flex flex-col md:items-end gap-2">
+        <!-- 3 Nút Mạng Xã Hội -->
+        <div class="flex items-center space-x-4">
+          <a href="https://www.youtube.com/@Apptinhg%E1%BB%8Dn" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-red-600 font-bold transition flex items-center">
+            <i class="fa-brands fa-youtube mr-1 text-sm text-red-600"></i> YouTube Channel
+          </a>
+          <a href="https://www.tiktok.com/@kiengiun1202" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-black font-bold transition flex items-center">
+            <i class="fa-brands fa-tiktok mr-1 text-sm"></i> Kênh TikTok
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61593378731175" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-blue-600 font-bold transition flex items-center">
+            <i class="fa-brands fa-facebook mr-1 text-sm text-blue-600"></i> Facebook
+          </a>
+        </div>
+
+        <!-- Thông tin liên hệ trực tiếp Zalo -->
+        <div class="flex items-center text-slate-700 font-bold bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+          <a href="https://zalo.me/0916887359" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 transition flex items-center">
+            <i class="fa-solid fa-phone-volume text-indigo-600 mr-2 animate-pulse"></i>
+            <span>Nguyễn Trung Kiên — Zalo: <span class="text-indigo-600 font-extrabold">0916.887.359</span></span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= MODALS (AUTH & RESULT) ================= -->
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-slate-800 text-lg" id="auth-modal-title">Đăng Nhập Phụ Huynh</h3>
+        <button onclick="closeModal('auth-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Tên tài khoản</label>
+          <input type="text" id="auth-username" placeholder="Ví dụ: ba_kien" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm outline-none focus:border-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Mã PIN (6 số)</label>
+          <input type="password" maxlength="6" id="auth-pin" placeholder="••••••" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm outline-none focus:border-indigo-500 text-center text-lg tracking-widest">
+        </div>
+        <button id="btn-auth-submit" onclick="submitAuth()" class="w-full py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition shadow">
+          Đăng Nhập
+        </button>
+        <div class="text-center">
+          <button id="btn-toggle-auth-mode" onclick="toggleAuthMode()" class="text-xs text-indigo-600 font-bold hover:underline">
+            Chưa có tài khoản? Bấm để Đăng ký
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Thêm Bé -->
+  <div id="add-child-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-slate-800 text-lg">Tạo Hồ Sơ Bé Mới</h3>
+        <button onclick="closeModal('add-child-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Tên bé hoặc biệt danh</label>
+          <input type="text" id="new-child-name" placeholder="Ví dụ: Bé Milo" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm outline-none focus:border-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Độ tuổi</label>
+          <input type="number" min="4" max="18" id="new-child-age" value="7" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm outline-none focus:border-indigo-500">
+        </div>
+        <button onclick="submitCreateChild()" class="w-full py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition shadow">
+          Lưu Hồ Sơ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Kết quả bài gõ -->
+  <div id="result-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl">
+      <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+        <i class="fa-solid fa-trophy"></i>
+      </div>
+      <h3 class="font-extrabold text-2xl text-slate-800 mb-1">Hoàn Thành Bài Tập!</h3>
+      <p class="text-xs text-slate-500 mb-6">Tiến trình đã được lưu vào hệ thống Google Sheets.</p>
+      
+      <div class="grid grid-cols-2 gap-3 mb-6">
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+          <div class="text-xs text-slate-500 font-bold">Tốc độ</div>
+          <div id="res-wpm" class="text-2xl font-black text-indigo-600">0 WPM</div>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+          <div class="text-xs text-slate-500 font-bold">Độ chính xác</div>
+          <div id="res-accuracy" class="text-2xl font-black text-emerald-600">0%</div>
+        </div>
+      </div>
+
+      <button onclick="closeModal('result-modal'); nextLesson();" class="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition shadow-lg mb-2">
+        Học Bài Tiếp Theo <i class="fa-solid fa-arrow-right ml-1"></i>
+      </button>
+      <button onclick="closeModal('result-modal'); resetCurrentLesson();" class="w-full py-2 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition">
+        Gõ lại bài này
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT HỢP NHẤT ================= -->
+  <script>
+    // -------------------------------------------------------------
+    // CẤU HÌNH API
+    // -------------------------------------------------------------
+    const API_URL = "https://script.google.com/macros/s/AKfycbz_YOUR_SCRIPT_ID_HERE/exec";
+
+    // -------------------------------------------------------------
+    // DỮ LIỆU BÀI TẬP VÀ GAME LEVELS
+    // -------------------------------------------------------------
+    const LESSON_DATABASE = {
+      daoduc: [
+        { id: "DD01", levelId: "L01", title: "Lời chào và sự tôn trọng", text: "Lời chào đi trước nụ cười theo sau. Kính trọng người lớn tuổi là nét đẹp của người con ngoan.", meaning: "Dạy bé luôn biết chào hỏi lễ phép với ông bà, cha mẹ và thầy cô." },
+        { id: "DD02", levelId: "L01", title: "Lòng trung thực", text: "Cây ngay không sợ chết đứng. Sống trung thực giúp tâm hồn luôn thanh thản và được tin yêu.", meaning: "Giáo dục tính trung thực, không bao giờ nói dối." }
+      ],
+      cadao: [
+        { id: "CD01", levelId: "L01", title: "Bầu ơi thương lấy bí cùng", text: "Bầu ơi thương lấy bí cùng, tuy rằng khác giống nhưng chung một giàn.", meaning: "Tinh thần đoàn kết, sẻ chia và giúp đỡ những người xung quanh." }
+      ],
+      coban: [
+        { id: "CB01", levelId: "L01", title: "Hàng phím cơ sở", text: "asdf jkl; asdf jkl; aass ddff jjkk ll;;", meaning: "Luyện tập đặt ngón tay chuẩn xác trên hàng phím cơ sở." }
+      ]
+    };
+
+    const GAME_LEVELS = [
+      { levelId: "L01", title: "Màn 1: Cổ Loa Xuất Trận", quote: "Lời chào cao hơn mâm cỗ", speed: 0.6 },
+      { levelId: "L02", title: "Màn 2: Rèn Đức Luyện Tài", quote: "Học đi đôi với hành rèn đức luyện tài", speed: 0.9 },
+      { levelId: "L03", title: "Màn 3: Uống Nước Nhớ Nguồn", quote: "Uống nước nhớ nguồn ăn quả nhớ kẻ trồng cây", speed: 1.2 }
+    ];
+
+    // -------------------------------------------------------------
+    // STATE TOÀN CỤC
+    // -------------------------------------------------------------
+    let currentView = "practice";
+    let state = {
+      token: localStorage.getItem("gv_token") || null,
+      parent: JSON.parse(localStorage.getItem("gv_parent") || "null"),
+      children: [],
+      activeChildId: null,
+
+      currentCategory: "daoduc",
+      currentLessonIndex: 0,
+      currentLesson: null,
+      currentSessionId: null,
+      isSessionActive: false,
+      startTime: null,
+      timerInterval: null,
+      typedIndex: 0,
+      errorsCount: 0,
+      totalCharsTyped: 0,
+      isAuthRegisterMode: false
+    };
+
+    // -------------------------------------------------------------
+    // ĐIỀU HƯỚNG VIEW (PRACTICE vs GAME)
+    // -------------------------------------------------------------
+    function switchView(viewName) {
+      currentView = viewName;
+      const practiceEl = document.getElementById("view-practice");
+      const gameEl = document.getElementById("view-game");
+      const btnPractice = document.getElementById("nav-btn-practice");
+      const btnGame = document.getElementById("nav-btn-game");
+
+      if (viewName === "practice") {
+        practiceEl.classList.remove("hidden");
+        gameEl.classList.add("hidden");
+        btnPractice.className = "px-4 py-1.5 rounded-lg font-bold text-sm transition bg-white text-indigo-600 shadow-sm";
+        btnGame.className = "px-4 py-1.5 rounded-lg font-bold text-sm transition text-slate-600 hover:text-indigo-600";
+        stopGameLoop();
+      } else {
+        practiceEl.classList.add("hidden");
+        gameEl.classList.remove("hidden");
+        btnGame.className = "px-4 py-1.5 rounded-lg font-bold text-sm transition bg-white text-indigo-600 shadow-sm";
+        btnPractice.className = "px-4 py-1.5 rounded-lg font-bold text-sm transition text-slate-600 hover:text-indigo-600";
+        initGameModule();
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 1. MODULE LUYỆN TẬP GÕ (PRACTICE)
+    // -------------------------------------------------------------
+    function initPracticeModule() {
+      renderCategorySelect();
+      loadLesson(0);
+      setupPracticeKeyListeners();
+    }
+
+    function renderCategorySelect() {
+      const cat = state.currentCategory;
+      const lessonSelect = document.getElementById("lesson-item");
+      lessonSelect.innerHTML = "";
+      LESSON_DATABASE[cat].forEach((l, index) => {
+        const opt = document.createElement("option");
+        opt.value = index;
+        opt.innerText = `Bài ${index + 1}: ${l.title}`;
+        lessonSelect.appendChild(opt);
+      });
+    }
+
+    function onCategoryChanged() {
+      state.currentCategory = document.getElementById("lesson-category").value;
+      renderCategorySelect();
+      loadLesson(0);
+    }
+
+    function onLessonChanged() {
+      const idx = parseInt(document.getElementById("lesson-item").value, 10);
+      loadLesson(idx);
+    }
+
+    function loadLesson(index) {
+      state.currentLessonIndex = index;
+      state.currentLesson = LESSON_DATABASE[state.currentCategory][index];
+      document.getElementById("lesson-meaning").innerHTML = `<i class="fa-solid fa-lightbulb mr-2"></i> Ý nghĩa: ${state.currentLesson.meaning}`;
+      resetCurrentLesson();
+    }
+
+    function resetCurrentLesson() {
+      clearInterval(state.timerInterval);
+      state.typedIndex = 0;
+      state.errorsCount = 0;
+      state.totalCharsTyped = 0;
+      state.isSessionActive = false;
+      state.startTime = null;
+      document.getElementById("stat-wpm").innerText = "0";
+      document.getElementById("stat-accuracy").innerText = "100%";
+      document.getElementById("stat-timer").innerText = "00:00";
+      renderPracticeTextDisplay();
+      highlightVirtualKey();
+    }
+
+    function renderPracticeTextDisplay() {
+      const text = state.currentLesson.text;
+      const container = document.getElementById("text-display");
+      container.innerHTML = "";
+      for (let i = 0; i < text.length; i++) {
+        const span = document.createElement("span");
+        span.id = `char-${i}`;
+        span.innerText = text[i];
+        if (i === 0) span.classList.add("char-current");
+        container.appendChild(span);
+      }
+    }
+
+    function setupPracticeKeyListeners() {
+      const textDisplay = document.getElementById("text-display");
+      const hiddenInput = document.getElementById("typing-input");
+      textDisplay.addEventListener("click", () => hiddenInput.focus());
+
+      window.addEventListener("keydown", (e) => {
+        if (currentView !== "practice") return;
+        if (!document.getElementById("auth-modal").classList.contains("hidden") ||
+            !document.getElementById("add-child-modal").classList.contains("hidden")) return;
+        if (e.key === "Tab" || e.key === "Alt" || e.key === "Control") return;
+
+        handlePracticeKeyPress(e.key);
+      });
+    }
+
+    function handlePracticeKeyPress(key) {
+      const text = state.currentLesson.text;
+      if (state.typedIndex >= text.length) return;
+
+      if (!state.isSessionActive) {
+        state.isSessionActive = true;
+        state.startTime = new Date();
+        startPracticeTimer();
+        if (state.token && state.activeChildId) {
+          startBackendSession("LESSON", state.currentLesson.levelId, state.currentLesson.id);
+        }
+      }
+
+      const expected = text[state.typedIndex];
+      const charEl = document.getElementById(`char-${state.typedIndex}`);
+      state.totalCharsTyped++;
+
+      if (key === expected) {
+        charEl.className = "char-correct";
+        state.typedIndex++;
+        if (state.typedIndex < text.length) {
+          document.getElementById(`char-${state.typedIndex}`).className = "char-current";
+        }
+      } else if (key.length === 1) {
+        state.errorsCount++;
+        charEl.className = "char-incorrect char-current";
+      }
+
+      updatePracticeStats();
+      highlightVirtualKey();
+
+      if (state.typedIndex >= text.length) {
+        finishPracticeLesson();
+      }
+    }
+
+    function updatePracticeStats() {
+      if (!state.startTime) return;
+      const elapsedMins = (new Date() - state.startTime) / 60000;
+      const wpm = elapsedMins > 0 ? Math.round((state.typedIndex / 5) / elapsedMins) : 0;
+      const acc = state.totalCharsTyped > 0 
+        ? Math.max(0, Math.round(((state.totalCharsTyped - state.errorsCount) / state.totalCharsTyped) * 100)) 
+        : 100;
+      document.getElementById("stat-wpm").innerText = wpm;
+      document.getElementById("stat-accuracy").innerText = `${acc}%`;
+    }
+
+    function startPracticeTimer() {
+      state.timerInterval = setInterval(() => {
+        const secs = Math.floor((new Date() - state.startTime) / 1000);
+        const m = String(Math.floor(secs / 60)).padStart(2, '0');
+        const s = String(secs % 60).padStart(2, '0');
+        document.getElementById("stat-timer").innerText = `${m}:${s}`;
+      }, 1000);
+    }
+
+    function highlightVirtualKey() {
+      document.querySelectorAll(".key").forEach(k => k.classList.remove("key-target"));
+      if (state.typedIndex < state.currentLesson.text.length) {
+        const nextChar = state.currentLesson.text[state.typedIndex].toLowerCase();
+        const keyEl = document.querySelector(`.key[data-key="${nextChar === ' ' ? ' ' : nextChar}"]`);
+        if (keyEl) keyEl.classList.add("key-target");
+      }
+    }
+
+    async function finishPracticeLesson() {
+      clearInterval(state.timerInterval);
+      const elapsedSecs = Math.max(1, Math.floor((new Date() - state.startTime) / 1000));
+      const words = state.typedIndex / 5;
+      const wpm = Math.round(words / (elapsedSecs / 60));
+      const acc = Math.max(0, Math.round(((state.totalCharsTyped - state.errorsCount) / state.totalCharsTyped) * 100));
+
+      document.getElementById("res-wpm").innerText = `${wpm} WPM`;
+      document.getElementById("res-accuracy").innerText = `${acc}%`;
+      openModal("result-modal");
+
+      if (state.token && state.activeChildId) {
+        await callApi({
+          action: "completeGameSession",
+          token: state.token,
+          learningSessionId: state.currentSessionId,
+          childId: state.activeChildId,
+          levelId: state.currentLesson.levelId,
+          lessonId: state.currentLesson.id,
+          result: acc >= 80 ? "WIN" : "LOSE",
+          accuracy: acc,
+          wpm: wpm,
+          correctChars: state.typedIndex,
+          totalChars: state.totalCharsTyped,
+          errors: state.errorsCount,
+          bombs: 0,
+          wordsCompleted: Math.round(words),
+          durationSeconds: elapsedSecs
+        });
+      }
+    }
+
+    function nextLesson() {
+      const list = LESSON_DATABASE[state.currentCategory];
+      if (state.currentLessonIndex + 1 < list.length) {
+        document.getElementById("lesson-item").value = state.currentLessonIndex + 1;
+        loadLesson(state.currentLessonIndex + 1);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 2. MODULE MINI GAME THẦN CÔNG CANVAS
+    // -------------------------------------------------------------
+    let gameCanvas, gameCtx, gameInputEl;
+    let gameAnimationId = null;
+    let gameCurrentLevelIdx = 0;
+    let gameWordChain = [];
+    let gameTargetIdx = 0;
+    let gameBullets = [];
+    let gameParticles = [];
+    let gameScore = 0;
+    let gameLives = 3;
+    let gameIsJammed = false;
+    let gameFailStreak = 0;
+    let isGameOverState = false;
+    let gameStats = { correctWords: 0, totalInputs: 0, errors: 0, startTime: null };
+
+    function initGameModule() {
+      gameCanvas = document.getElementById("gameCanvas");
+      gameCtx = gameCanvas.getContext("2d");
+      gameInputEl = document.getElementById("game-input");
+
+      setupGameInputListeners();
+      startGameLevel(0);
+      runGameLoop();
+    }
+
+    function stopGameLoop() {
+      if (gameAnimationId) {
+        cancelAnimationFrame(gameAnimationId);
+        gameAnimationId = null;
+      }
+    }
+
+    function startGameLevel(lvlIdx) {
+      gameCurrentLevelIdx = lvlIdx;
+      const level = GAME_LEVELS[lvlIdx];
+      document.getElementById("game-level-title").innerText = level.title;
+
+      const words = level.quote.split(" ");
+      const spacing = 140;
+      const startX = gameCanvas.width + 40;
+
+      gameWordChain = words.map((w, i) => ({
+        text: w,
+        cleanText: cleanVietnamese(w),
+        x: startX + (i * spacing),
+        y: 80,
+        isBomb: i % 4 === 3 && lvlIdx > 0,
+        hit: false,
+        width: 100,
+        height: 40
+      }));
+
+      gameTargetIdx = 0;
+      gameBullets = [];
+      gameParticles = [];
+      isGameOverState = false;
+      gameStats = { correctWords: 0, totalInputs: 0, errors: 0, startTime: new Date() };
+
+      renderGameSentenceUI();
+      updateGameTargetUI();
+      gameInputEl.value = "";
+      gameInputEl.focus();
+
+      if (state.token && state.activeChildId) {
+        startBackendSession("GAME", level.levelId, "");
+      }
+    }
+
+    function renderGameSentenceUI() {
+      const container = document.getElementById("game-sentence-display");
+      container.innerHTML = "";
+      gameWordChain.forEach((item, idx) => {
+        const badge = document.createElement("span");
+        badge.id = `g-word-${idx}`;
+        badge.className = idx === gameTargetIdx 
+          ? "text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded border border-amber-500/40" 
+          : "text-slate-400";
+        badge.innerText = item.text;
+        container.appendChild(badge);
+      });
+    }
+
+    function updateGameTargetUI() {
+      gameWordChain.forEach((_, idx) => {
+        const badge = document.getElementById(`g-word-${idx}`);
+        if (badge) {
+          if (idx < gameTargetIdx) badge.className = "text-emerald-400 line-through opacity-60";
+          else if (idx === gameTargetIdx) badge.className = "text-amber-300 bg-amber-500/30 px-2 py-0.5 rounded border border-amber-400";
+          else badge.className = "text-slate-400";
+        }
+      });
+
+      if (gameTargetIdx < gameWordChain.length) {
+        const target = gameWordChain[gameTargetIdx];
+        document.getElementById("ammo-word").innerText = target.isBomb ? "💣 BỎ QUA" : target.text;
+        document.getElementById("ammo-word").className = target.isBomb 
+          ? "text-2xl font-black text-red-400 bg-red-950/40 px-4 py-1.5 rounded-xl border border-red-700 animate-pulse" 
+          : "text-2xl font-black text-white bg-slate-950 px-4 py-1.5 rounded-xl border border-slate-700 tracking-wide";
+      }
+    }
+
+    function runGameLoop() {
+      if (currentView !== "game") return;
+
+      gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+      drawGameWordChain();
+      drawGameCannon();
+      drawGameBullets();
+      drawGameParticles();
+
+      if (!isGameOverState) updateGamePhysics();
+
+      gameAnimationId = requestAnimationFrame(runGameLoop);
+    }
+
+    function drawGameWordChain() {
+      gameWordChain.forEach((item, idx) => {
+        if (item.hit) return;
+        gameCtx.save();
+        if (item.isBomb) {
+          gameCtx.fillStyle = "#7f1d1d";
+          gameCtx.strokeStyle = "#ef4444";
+        } else if (idx === gameTargetIdx) {
+          gameCtx.fillStyle = "#1d4ed8";
+          gameCtx.strokeStyle = "#60a5fa";
+        } else {
+          gameCtx.fillStyle = "#1e293b";
+          gameCtx.strokeStyle = "#475569";
+        }
+        gameCtx.lineWidth = idx === gameTargetIdx ? 3 : 1.5;
+        gameCtx.beginPath();
+        gameCtx.roundRect(item.x - 50, item.y - 20, item.width, item.height, [10]);
+        gameCtx.fill();
+        gameCtx.stroke();
+
+        gameCtx.fillStyle = "#ffffff";
+        gameCtx.font = idx === gameTargetIdx ? "bold 16px Nunito" : "600 14px Nunito";
+        gameCtx.textAlign = "center";
+        gameCtx.textBaseline = "middle";
+        gameCtx.fillText(item.isBomb ? `💣 ${item.text}` : item.text, item.x, item.y);
+        gameCtx.restore();
+      });
+    }
+
+    function drawGameCannon() {
+      const cannonX = 80;
+      const cannonY = gameCanvas.height - 50;
+      gameCtx.save();
+      gameCtx.translate(cannonX, cannonY);
+
+      let angle = -Math.PI / 4;
+      if (gameTargetIdx < gameWordChain.length) {
+        const target = gameWordChain[gameTargetIdx];
+        angle = Math.atan2(target.y - cannonY, target.x - cannonX);
+      }
+      gameCtx.rotate(angle);
+
+      gameCtx.fillStyle = gameIsJammed ? "#ef4444" : "#f59e0b";
+      gameCtx.fillRect(0, -12, 50, 24);
+      gameCtx.restore();
+
+      gameCtx.fillStyle = "#78350f";
+      gameCtx.beginPath();
+      gameCtx.arc(cannonX, cannonY, 20, 0, Math.PI * 2);
+      gameCtx.fill();
+    }
+
+    function updateGamePhysics() {
+      const speed = GAME_LEVELS[gameCurrentLevelIdx].speed;
+      gameWordChain.forEach(item => { if (!item.hit) item.x -= speed; });
+
+      if (gameTargetIdx < gameWordChain.length) {
+        const cur = gameWordChain[gameTargetIdx];
+        if (cur.x < 40) {
+          if (!cur.isBomb) takeGameDamage();
+          gameTargetIdx++;
+          updateGameTargetUI();
+          checkGameCompletion();
+        }
+      }
+    }
+
+    function drawGameBullets() {
+      for (let i = gameBullets.length - 1; i >= 0; i--) {
+        const b = gameBullets[i];
+        b.x += Math.cos(b.angle) * 18;
+        b.y += Math.sin(b.angle) * 18;
+
+        gameCtx.fillStyle = "#fbbf24";
+        gameCtx.beginPath();
+        gameCtx.arc(b.x, b.y, 6, 0, Math.PI * 2);
+        gameCtx.fill();
+
+        const target = gameWordChain[b.targetIdx];
+        if (target && !target.hit) {
+          if (Math.hypot(b.x - target.x, b.y - target.y) < 35) {
+            target.hit = true;
+            createGameExplosion(target.x, target.y, target.isBomb ? "#ef4444" : "#10b981");
+            gameBullets.splice(i, 1);
+
+            if (target.isBomb) {
+              takeGameDamage();
+            } else {
+              gameScore += 100;
+              document.getElementById("game-ui-score").innerText = gameScore;
+            }
+
+            gameTargetIdx++;
+            updateGameTargetUI();
+            checkGameCompletion();
+          }
+        }
+      }
+    }
+
+    function createGameExplosion(x, y, color) {
+      for (let i = 0; i < 15; i++) {
+        gameParticles.push({
+          x, y,
+          vx: (Math.random() - 0.5) * 6,
+          vy: (Math.random() - 0.5) * 6,
+          radius: Math.random() * 4 + 2,
+          color,
+          alpha: 1
+        });
+      }
+    }
+
+    function drawGameParticles() {
+      for (let i = gameParticles.length - 1; i >= 0; i--) {
+        const p = gameParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.03;
+        if (p.alpha <= 0) { gameParticles.splice(i, 1); continue; }
+
+        gameCtx.save();
+        gameCtx.globalAlpha = p.alpha;
+        gameCtx.fillStyle = p.color;
+        gameCtx.beginPath();
+        gameCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        gameCtx.fill();
+        gameCtx.restore();
+      }
+    }
+
+    function takeGameDamage() {
+      gameLives--;
+      document.getElementById("game-ui-lives").innerText = "❤️".repeat(Math.max(0, gameLives));
+      if (gameLives <= 0) finishGameSession(false);
+    }
+
+    function checkGameCompletion() {
+      if (gameTargetIdx >= gameWordChain.length && gameLives > 0) {
+        finishGameSession(true);
+      }
+    }
+
+    function setupGameInputListeners() {
+      gameInputEl.addEventListener("input", () => {
+        if (isGameOverState || gameIsJammed) return;
+        const typed = cleanVietnamese(gameInputEl.value.trim());
+        if (!typed || gameTargetIdx >= gameWordChain.length) return;
+
+        const cur = gameWordChain[gameTargetIdx];
+        if (typed === cur.cleanText) {
+          fireGameCannon(gameTargetIdx);
+          gameStats.correctWords++;
+          gameStats.totalInputs++;
+          gameFailStreak = 0;
+          gameInputEl.value = "";
+        }
+      });
+
+      gameInputEl.addEventListener("keydown", (e) => {
+        if (gameIsJammed) {
+          if (e.key === " " || e.key === "Enter" || e.key === "Backspace") {
+            gameIsJammed = false;
+            gameFailStreak = 0;
+            gameInputEl.value = "";
+            document.getElementById("jammed-banner").classList.add("hidden");
+          }
+          return;
+        }
+
+        if (e.key === "Enter" || e.key === " ") {
+          const typed = cleanVietnamese(gameInputEl.value.trim());
+          const cur = gameWordChain[gameTargetIdx];
+          if (typed && typed !== cur?.cleanText) {
+            gameStats.errors++;
+            gameStats.totalInputs++;
+            gameFailStreak++;
+            if (gameFailStreak >= 3) {
+              gameIsJammed = true;
+              document.getElementById("jammed-banner").classList.remove("hidden");
+            }
+          }
+          if (e.key === " ") setTimeout(() => gameInputEl.value = "", 10);
+        }
+
+        const tot = gameStats.totalInputs || 1;
+        const acc = Math.max(0, Math.round(((tot - gameStats.errors) / tot) * 100));
+        document.getElementById("game-ui-accuracy").innerText = `${acc}%`;
+      });
+    }
+
+    function fireGameCannon(targetIdx) {
+      const cannonX = 80;
+      const cannonY = gameCanvas.height - 50;
+      const target = gameWordChain[targetIdx];
+      const angle = Math.atan2(target.y - cannonY, target.x - cannonX);
+      gameBullets.push({
+        x: cannonX + Math.cos(angle) * 40,
+        y: cannonY + Math.sin(angle) * 40,
+        angle,
+        targetIdx
+      });
+    }
+
+    async function finishGameSession(isWin) {
+      isGameOverState = true;
+      const elapsedSecs = Math.max(1, Math.floor((new Date() - gameStats.startTime) / 1000));
+      const wpm = Math.round((gameStats.correctWords * 5) / (elapsedSecs / 60));
+      const tot = gameStats.totalInputs || 1;
+      const acc = Math.max(0, Math.round(((tot - gameStats.errors) / tot) * 100));
+
+      alert(isWin ? `🎉 CHIẾN THẮNG MÀN CHƠI!\nTốc độ: ${wpm} WPM\nĐộ chính xác: ${acc}%` : "💥 THẤT BẠI! Bé hãy bình tĩnh luyện lại nhé!");
+
+      if (state.token && state.activeChildId) {
+        await callApi({
+          action: "completeGameSession",
+          token: state.token,
+          learningSessionId: state.currentSessionId,
+          childId: state.activeChildId,
+          levelId: GAME_LEVELS[gameCurrentLevelIdx].levelId,
+          lessonId: "",
+          result: isWin ? "WIN" : "LOSE",
+          accuracy: acc,
+          wpm: wpm,
+          correctChars: gameStats.correctWords * 5,
+          totalChars: (gameStats.correctWords + gameStats.errors) * 5,
+          errors: gameStats.errors,
+          bombs: 0,
+          wordsCompleted: gameStats.correctWords,
+          durationSeconds: elapsedSecs
+        });
+      }
+    }
+
+    function cleanVietnamese(str) {
+      return (str || "").toLowerCase().replace(/[,.!?;:]/g, "");
+    }
+
+    // -------------------------------------------------------------
+    // 3. API & AUTHENTICATION
+    // -------------------------------------------------------------
+    async function callApi(payload) {
+      if (API_URL.includes("YOUR_SCRIPT_ID_HERE")) {
+        console.warn("Chưa cấu hình API_URL. Chạy chế độ demo.");
+        return { success: true, data: { demo: true } };
+      }
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+        return await res.json();
+      } catch (e) {
+        return { success: false, error: { message: "Lỗi kết nối máy chủ." } };
+      }
+    }
+
+    async function startBackendSession(type, levelId, lessonId) {
+      const res = await callApi({
+        action: "startSession",
+        token: state.token,
+        childId: state.activeChildId,
+        sessionType: type,
+        levelId: levelId,
+        lessonId: lessonId
+      });
+      if (res.success && res.data) state.currentSessionId = res.data.learningSessionId;
+    }
+
+    function updateAuthUI() {
+      const btnOpenLogin = document.getElementById("btn-open-login");
+      const userBadge = document.getElementById("user-profile-badge");
+      const displayNameEl = document.getElementById("display-parent-name");
+
+      if (state.token && state.parent) {
+        btnOpenLogin.classList.add("hidden");
+        userBadge.classList.remove("hidden");
+        userBadge.classList.add("flex");
+        if (displayNameEl) {
+          displayNameEl.innerText = `PH: ${state.parent.username}`;
+        }
+      } else {
+        btnOpenLogin.classList.remove("hidden");
+        userBadge.classList.add("hidden");
+        userBadge.classList.remove("flex");
+      }
+    }
+
+    function toggleAuthMode() {
+      state.isAuthRegisterMode = !state.isAuthRegisterMode;
+      document.getElementById("auth-modal-title").innerText = state.isAuthRegisterMode ? "Đăng Ký Phụ Huynh Mới" : "Đăng Nhập Phụ Huynh";
+      document.getElementById("btn-auth-submit").innerText = state.isAuthRegisterMode ? "Tạo Tài Khoản" : "Đăng Nhập";
+      document.getElementById("btn-toggle-auth-mode").innerText = state.isAuthRegisterMode ? "Đã có tài khoản? Đăng nhập" : "Chưa có tài khoản? Đăng ký mới";
+    }
+
+    async function submitAuth() {
+      const username = document.getElementById("auth-username").value.trim();
+      const pin = document.getElementById("auth-pin").value.trim();
+      if (!username || pin.length !== 6) return alert("Vui lòng nhập tên và mã PIN 6 số.");
+
+      const action = state.isAuthRegisterMode ? "registerParent" : "loginParent";
+      const res = await callApi({ action, username, pin });
+
+      if (res.success) {
+        if (state.isAuthRegisterMode) {
+          alert("Đăng ký thành công! Hãy đăng nhập bằng mã PIN vừa tạo.");
+          toggleAuthMode();
+        } else {
+          state.token = res.data.token;
+          state.parent = res.data.parent;
+          localStorage.setItem("gv_token", state.token);
+          localStorage.setItem("gv_parent", JSON.stringify(state.parent));
+          closeModal("auth-modal");
+          updateAuthUI();
+          fetchChildrenList();
+        }
+      } else {
+        alert(res.error?.message || "Xác thực thất bại.");
+      }
+    }
+
+    async function fetchChildrenList() {
+      // 1. Kiểm tra cache localStorage trước để hiển thị ngay lập tức khi load trang
+      const cachedChildren = JSON.parse(localStorage.getItem("gv_children") || "[]");
+      if (cachedChildren.length > 0) {
+        state.children = cachedChildren;
+        renderChildrenDropdown();
+      }
+
+      // 2. Gọi API để đồng bộ dữ liệu mới nhất từ Google Sheets
+      const res = await callApi({ action: "getChildren", token: state.token });
+      
+      if (res.success) {
+        if (res.data?.children && res.data.children.length > 0) {
+          state.children = res.data.children;
+        } else if (res.data?.demo) {
+          // Dữ liệu mẫu khi chạy Local chưa gắn API Google Sheets
+          state.children = [
+            { childId: "C000001", childName: "Bé Milo", age: 9 },
+            { childId: "C000002", childName: "Bé Mina", age: 5 }
+          ];
+        } else {
+          // Chưa có bé nào trong tài khoản
+          state.children = [];
+          openModal("add-child-modal");
+          return;
+        }
+
+        // Lưu vào cache
+        localStorage.setItem("gv_children", JSON.stringify(state.children));
+        renderChildrenDropdown();
+      }
+    }
+
+    function renderChildrenDropdown() {
+      const select = document.getElementById("child-select");
+      if (!select) return;
+      select.innerHTML = "";
+
+      if (state.children.length === 0) {
+        select.innerHTML = `<option value="">+ Thêm bé</option>`;
+        return;
+      }
+
+      state.children.forEach((c) => {
+        const opt = document.createElement("option");
+        opt.value = c.childId;
+        opt.innerText = `Bé: ${c.childName} (${c.age}t)`;
+        if (state.activeChildId === c.childId) {
+          opt.selected = true;
+        }
+        select.appendChild(opt);
+      });
+
+      if (!state.activeChildId || !state.children.some(c => c.childId === state.activeChildId)) {
+        state.activeChildId = state.children[0].childId;
+        localStorage.setItem("gv_active_child", state.activeChildId);
+      }
+    }
+
+    function onChildChanged() {
+      state.activeChildId = document.getElementById("child-select").value;
+      localStorage.setItem("gv_active_child", state.activeChildId);
+      if (currentView === "practice") resetCurrentLesson();
+    }
+
+    async function submitCreateChild() {
+      const name = document.getElementById("new-child-name").value.trim();
+      const age = parseInt(document.getElementById("new-child-age").value, 10);
+      if (!name || isNaN(age)) return alert("Vui lòng điền đúng thông tin của bé.");
+
+      const res = await callApi({ action: "createChild", token: state.token, childName: name, age: age });
+      if (res.success) {
+        // Thêm vào state local
+        const newChild = {
+          childId: res.data?.childId || "C" + Date.now().toString().slice(-6),
+          childName: name,
+          age: age
+        };
+        state.children.push(newChild);
+        state.activeChildId = newChild.childId;
+        localStorage.setItem("gv_children", JSON.stringify(state.children));
+        localStorage.setItem("gv_active_child", state.activeChildId);
+        
+        closeModal("add-child-modal");
+        renderChildrenDropdown();
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("gv_token");
+      localStorage.removeItem("gv_parent");
+      localStorage.removeItem("gv_children");
+      localStorage.removeItem("gv_active_child");
+      state.token = null;
+      state.parent = null;
+      state.children = [];
+      state.activeChildId = null;
+      updateAuthUI();
+    }
+
+    function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
+    function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
+
+    // -------------------------------------------------------------
+    // KHỞI ĐỘNG ỨNG DỤNG
+    // -------------------------------------------------------------
+    document.addEventListener("DOMContentLoaded", () => {
+      state.activeChildId = localStorage.getItem("gv_active_child") || null;
+      initPracticeModule();
+      updateAuthUI();
+      if (state.token) {
+        fetchChildrenList();
+      }
+    });
+  </script>
+</body>
+</html>
