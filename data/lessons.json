@@ -1,0 +1,190 @@
+{
+  "kinhdien": {
+    "title": "📜 Văn Học Kinh Điển (Đạo Đức - Trí Tuệ - Nghị Lực)",
+    "lessons": [
+      {
+        "id": "VH01",
+        "levelId": "L01",
+        "title": "Nam Quốc Sơn Hà (Khẳng định chủ quyền)",
+        "text": "Nam quốc sơn hà Nam đế cư, tiệt nhiên định phận tại thiên thư.",
+        "meaning": "Bài thơ thần của Lý Thường Kiệt: Khẳng định ý chí độc lập, tự chủ thiêng liêng của dân tộc."
+      },
+      {
+        "id": "VH02",
+        "levelId": "L01",
+        "title": "Hịch Tướng Sĩ (Lòng căm thù giặc)",
+        "text": "Ta thường tới bữa quên ăn, nửa đêm vỗ gối, ruột đau như cắt, nước mắt đầm đìa.",
+        "meaning": "Ý chí kiên cường và lòng yêu nước cháy bỏng của Hưng Đạo Đại Vương Trần Quốc Tuấn."
+      },
+      {
+        "id": "VH03",
+        "levelId": "L01",
+        "title": "Bình Ngô Đại Cáo (Chí nhân đại nghĩa)",
+        "text": "Đem đại nghĩa để thắng hung tàn, lấy chí nhân để thay cường bạo.",
+        "meaning": "Tư tưởng nhân đạo cao đẹp và trí tuệ giữ nước của Nguyễn Trãi."
+      },
+      {
+        "id": "VH04",
+        "levelId": "L01",
+        "title": "Lời Kêu Gọi Toàn Quốc Kháng Chiến (Quyết tử)",
+        "text": "Chúng ta thà hy sinh tất cả, chứ nhất định không chịu mất nước, nhất định không chịu làm nô lệ.",
+        "meaning": "Ý chí quật cường bảo vệ nền độc lập tự do của dân tộc Chủ tịch Hồ Chí Minh khẳng định."
+      },
+      {
+        "id": "VH05",
+        "levelId": "L01",
+        "title": "Chiếu Dời Đô (Tầm nhìn thiên niên kỷ)",
+        "text": "Mưu toan nghiệp lớn, định chỗ ở nơi trung tâm, tính kế muôn đời cho con cháu.",
+        "meaning": "Trí tuệ nhìn xa trông rộng của vua Lý Thái Tổ khi dời đô về Thăng Long."
+      },
+      {
+        "id": "VH06",
+        "levelId": "L02",
+        "title": "Tuyên Ngôn Độc Lập (Quyền con người)",
+        "text": "Tất cả mọi người đều sinh ra có quyền bình đẳng. Tạo hóa cho họ những quyền không ai có thể xâm phạm được; trong những quyền ấy, có quyền được sống, quyền tự do và quyền mưu cầu hạnh phúc.",
+        "meaning": "Chân lý bất hủ về quyền con người và quyền tự do độc lập của các dân tộc."
+      },
+      {
+        "id": "VH07",
+        "levelId": "L02",
+        "title": "Hịch Tướng Sĩ (Tình nghĩa tướng sĩ)",
+        "text": "Các ngươi không có mặc thì ta cho áo, không có ăn thì ta cho cơm, quan nhỏ thì ta thăng chức, lương ít thì ta cấp bổng, đi thủy thì ta cho thuyền, đi bộ thì ta cho ngựa.",
+        "meaning": "Tình đồng chí, sự quan tâm sẻ chia chân thành của người làm lãnh đạo đối với cấp dưới."
+      },
+      {
+        "id": "VH08",
+        "levelId": "L02",
+        "title": "Bình Ngô Đại Cáo (Nền văn hiến tự hào)",
+        "text": "Như nước Đại Việt ta từ trước, vốn xưng nền văn hiến đã lâu. Núi sông bờ cõi đã chia, phong tục Bắc Nam cũng khác.",
+        "meaning": "Niềm tự hào sâu sắc về cội nguồn văn hiến và bản sắc văn hóa trường tồn của đất nước."
+      },
+      {
+        "id": "VH09",
+        "levelId": "L02",
+        "title": "Lời Kêu Gọi Toàn Quốc Kháng Chiến (Đoàn kết toàn dân)",
+        "text": "Bất kỳ đàn ông, đàn bà, bất kỳ người già, người trẻ, không chia tôn giáo, đảng phái, dân tộc. Hễ là người Việt Nam thì phải đứng lên đánh thực dân Pháp để cứu Tổ quốc.",
+        "meaning": "Sức mạnh đoàn kết của toàn thể dân tộc vượt qua mọi rào cản chia rẽ."
+      },
+      {
+        "id": "VH10",
+        "levelId": "L02",
+        "title": "Thư Kêu Gọi Thi Đua Ái Quốc (Bác Hồ)",
+        "text": "Thi đua là yêu nước, yêu nước thì phải thi đua. Và những người thi đua là những người yêu nước nhất.",
+        "meaning": "Khích lệ tinh thần hăng say lao động, sáng tạo và cống hiến hết mình vì sự phát triển chung."
+      },
+      {
+        "id": "VH11",
+        "levelId": "L03",
+        "title": "Văn Tế Nghĩa Sĩ Cần Giuộc (Tấm lòng kiên trung)",
+        "text": "Nhớ linh xưa: côi cút làm ăn, toan lo nghèo khó. Chưa quen cung ngựa, đâu tới trường nhung; chỉ biết ruộng trâu, ở theo làng họ. Vì nghĩa lớn mà dốc lòng vì nước.",
+        "meaning": "Tinh thần dũng cảm, đạo đức xả thân vì nghĩa lớn của những người nông dân bình dị."
+      },
+      {
+        "id": "VH12",
+        "levelId": "L03",
+        "title": "Bình Ngô Đại Cáo (Trách nhiệm và gian lao)",
+        "text": "Nếm mật nằm gai, há phải một hai sớm tối. Quên ăn vì giận, sách lược thao suy xét đã tinh. Ngẫm thù lớn há đội trời chung, căm giặc nước thề không cùng sống.",
+        "meaning": "Bài học về sự kiên trì bền bỉ, không nản lòng trước mọi thử thách gian truân."
+      },
+      {
+        "id": "VH13",
+        "levelId": "L03",
+        "title": "Hịch Tướng Sĩ (Lòng cảnh giác và rèn luyện)",
+        "text": "Nay các ngươi trông thấy chủ nhục mà không biết lo, trông thấy quốc sỉ mà không biết thẹn. Làm tướng triều đình phải hầu giặc tù trưởng mà không biết tức. Hãy chăm lo rèn luyện võ nghệ để giữ vững giang sơn.",
+        "meaning": "Nhắc nhở tinh thần tự trọng, cảnh giác cao độ và luôn chủ động rèn luyện bản thân mỗi ngày."
+      },
+      {
+        "id": "VH14",
+        "levelId": "L03",
+        "title": "Thư Gửi Học Sinh (Nhân ngày khai trường 1945)",
+        "text": "Non sông Việt Nam có trở nên tươi đẹp hay không, dân tộc Việt Nam có bước tới đài vinh quang để sánh vai với các cường quốc năm châu được hay không, chính là nhờ một phần lớn ở công học tập của các em.",
+        "meaning": "Trách nhiệm học hỏi nâng cao tri thức của thế hệ trẻ đối với tương lai đất nước."
+      },
+      {
+        "id": "VH15",
+        "levelId": "L03",
+        "title": "Đạo Làm Tướng (Trần Hưng Đạo)",
+        "text": "Chim hồng hộc muốn bay cao phải nhờ có sáu cánh lông cứng. Nếu chỉ có lông cánh mà không có sức bay thì cũng không thể vượt qua sóng gió. Người có tài phải đi đôi với đức mới nên việc lớn.",
+        "meaning": "Trí tuệ sâu sắc về sự kết hợp giữa tài năng và phẩm chất đạo đức khi gánh vác việc lớn."
+      },
+      {
+        "id": "VH16",
+        "levelId": "L04",
+        "title": "Bình Ngô Đại Cáo (Chiến thắng bằng lòng dân)",
+        "text": "Gươm mài đá, đá núi cũng mòn; voi uống nước, nước sông phải cạn. Đánh một trận, sạch không kình ngạc; đánh hai trận, tan tác chim muông. Cơn gió to trút sạch lá khô, tổ kiến hổng sụt toang đê vỡ.",
+        "meaning": "Sức mạnh vô địch của chính nghĩa khi được lòng dân đồng thuận và ủng hộ."
+      },
+      {
+        "id": "VH17",
+        "levelId": "L04",
+        "title": "Tuyên Ngôn Độc Lập (Khẳng định quyền tự do)",
+        "text": "Một dân tộc đã gan góc chống ách nô lệ của Pháp hơn tám mươi năm nay, một dân tộc đã gan góc đứng về phe Đồng minh chống phát xít mấy năm nay, dân tộc đó phải được tự do! Dân tộc đó phải được độc lập!",
+        "meaning": "Lời khẳng định đanh thép và đầy sức thuyết phục về quyền độc lập tự do thiêng liêng."
+      },
+      {
+        "id": "VH18",
+        "levelId": "L04",
+        "title": "Hịch Tướng Sĩ (Quyết tâm xả thân)",
+        "text": "Dẫu cho trăm thân này phơi ngoài nội cỏ, nghìn xác này gói trong da ngựa, ta cũng vui lòng. Các ngươi hãy cùng ta đồng lòng gắng sức, học tập binh thư, giữ vững kỷ cương để muôn đời lưu danh thơm.",
+        "meaning": "Lòng trung thành tận tụy tuyệt đối và đức hy sinh cao cả vì đại cuộc chung."
+      },
+      {
+        "id": "VH19",
+        "levelId": "L04",
+        "title": "Di Chúc Bác Hồ (Bồi dưỡng thế hệ cách mạng)",
+        "text": "Đoàn viên và thanh niên ta nói chung là tốt, mọi việc đều hăng hái xung phong, không ngại khó khăn, có chí tiến thủ. Đảng cần phải chăm lo giáo dục đạo đức cách mạng cho họ, đào tạo họ thành những người thừa kế xây dựng xã hội chủ nghĩa vừa hồng vừa chuyên.",
+        "meaning": "Tầm quan trọng của việc rèn luyện song hành giữa Đức hạnh (hồng) và Trí tuệ năng lực (chuyên)."
+      },
+      {
+        "id": "VH20",
+        "levelId": "L04",
+        "title": "Đại Việt Sử Ký Toàn Thư (Hiền tài là nguyên khí)",
+        "text": "Hiền tài là nguyên khí của quốc gia, nguyên khí thịnh thì thế nước mạnh, rồi lên cao, nguyên khí suy thì thế nước yếu, rồi xuống thấp. Vì vậy các đấng thánh đế minh vương chẳng ai không lấy việc bồi dưỡng nhân tài làm việc đầu tiên.",
+        "meaning": "Trí tuệ vượt thời gian về tầm quan trọng cốt lõi của việc nuôi dưỡng và trọng dụng nhân tài có đức có tài."
+      }
+    ]
+  },
+  "daoduc": {
+    "title": "🌿 Bài Học Đạo Đức & Nhân Cách",
+    "lessons": [
+      {
+        "id": "DD01",
+        "levelId": "L01",
+        "title": "Lời chào và sự tôn trọng",
+        "text": "Lời chào đi trước, nụ cười theo sau. Kính trọng người lớn tuổi là nét đẹp của người con ngoan.",
+        "meaning": "Dạy bé luôn biết chào hỏi lễ phép với ông bà, cha mẹ và thầy cô."
+      },
+      {
+        "id": "DD02",
+        "levelId": "L01",
+        "title": "Lòng trung thực",
+        "text": "Cây ngay không sợ chết đứng. Sống trung thực giúp tâm hồn luôn thanh thản và được mọi người tin yêu.",
+        "meaning": "Giáo dục tính trung thực, không bao giờ nói dối."
+      }
+    ]
+  },
+  "cadao": {
+    "title": "🇻🇳 Ca Dao, Tục Ngữ Việt Nam",
+    "lessons": [
+      {
+        "id": "CD01",
+        "levelId": "L01",
+        "title": "Bầu ơi thương lấy bí cùng",
+        "text": "Bầu ơi thương lấy bí cùng, tuy rằng khác giống nhưng chung một giàn.",
+        "meaning": "Tinh thần đoàn kết, sẻ chia và giúp đỡ những người xung quanh."
+      }
+    ]
+  },
+  "coban": {
+    "title": "⌨️ Hàng Phím Cơ Sở",
+    "lessons": [
+      {
+        "id": "CB01",
+        "levelId": "L01",
+        "title": "Hàng phím cơ sở (A S D F J K L)",
+        "text": "asdf jkl; asdf jkl; aass ddff jjkk ll;;",
+        "meaning": "Luyện tập đặt ngón tay chuẩn xác trên hàng phím cơ sở."
+      }
+    ]
+  }
+}
