@@ -75,7 +75,6 @@
         <div>
           <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chủ đề bài học</label>
           <select id="lesson-category" onchange="onCategoryChanged()" class="bg-slate-100 border border-slate-300 font-bold text-slate-700 rounded-xl px-3 py-2 text-sm outline-none">
-            <!-- Nạp động từ lessons.json -->
           </select>
         </div>
         <div>
@@ -164,17 +163,17 @@
         </div>
         <div class="flex gap-1.5">
           <div class="key w-16 h-10 rounded bg-slate-700 border border-slate-600 flex items-center justify-center" data-key="CapsLock">Caps</div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="a">A</div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="s">S</div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="d">D</div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border-2 border-indigo-500/50 flex items-center justify-center relative" data-key="f">F<span class="absolute bottom-0.5 w-2 h-0.5 bg-indigo-400"></span></div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="g">G</div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="h">H</div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border-2 border-indigo-500/50 flex items-center justify-center relative" data-key="j">J<span class="absolute bottom-0.5 w-2 h-0.5 bg-indigo-400"></span></div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="k">K</div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="l">L</div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key=";">;</div>
-          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center" data-key="'">'</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center font-bold" data-key="a">A</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center font-bold" data-key="s">S</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center font-bold" data-key="d">D</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border-2 border-indigo-500/50 flex items-center justify-center relative font-bold" data-key="f">F<span class="absolute bottom-0.5 w-2 h-0.5 bg-indigo-400"></span></div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center font-bold" data-key="g">G</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center font-bold" data-key="h">H</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border-2 border-indigo-500/50 flex items-center justify-center relative font-bold" data-key="j">J<span class="absolute bottom-0.5 w-2 h-0.5 bg-indigo-400"></span></div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center font-bold" data-key="k">K</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center font-bold" data-key="l">L</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center font-bold" data-key=";">;</div>
+          <div class="key w-10 h-10 rounded bg-slate-800 border border-slate-700 flex items-center justify-center font-bold" data-key="'">'</div>
           <div class="key w-16 h-10 rounded bg-indigo-600 border border-indigo-500 flex items-center justify-center font-bold" data-key="Enter">Enter</div>
         </div>
         <div class="flex gap-1.5">
@@ -294,7 +293,7 @@
       <div class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">Tên tài khoản</label>
-          <input type="text" id="auth-username" placeholder="Ví dụ: ba_kien" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm outline-none focus:border-indigo-500">
+          <input type="text" id="auth-username" placeholder="Ví dụ: Ba Kiên" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm outline-none focus:border-indigo-500">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">Mã PIN (6 số)</label>
@@ -360,11 +359,11 @@
     </div>
   </div>
 
-  <!-- SCRIPT LOGIC VỚI FETCH JSON -->
+  <!-- SCRIPT LOGIC -->
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbz_YOUR_SCRIPT_ID_HERE/exec";
+    // URL WEB APP GOOGLE APPS SCRIPT
+    const API_URL = "https://script.google.com/macros/s/AKfycbyCivyMDxg_KTMXBQsFrWcdJJVoFFnmtDp1mgEhQh8VxW10uBuPhF32Wyx5nsF7zVGFYA/exec";
 
-    // DATABASE DYNAMIC
     let LESSONS_DATA = {};
     let GAME_LEVELS_DATA = [];
 
@@ -372,10 +371,10 @@
     let state = {
       token: localStorage.getItem("gv_token") || null,
       parent: JSON.parse(localStorage.getItem("gv_parent") || "null"),
-      children: [],
+      children: JSON.parse(localStorage.getItem("gv_children") || "[]"),
       activeChildId: localStorage.getItem("gv_active_child") || null,
 
-      currentCategory: "kinhdien",
+      currentCategory: "",
       currentLessonIndex: 0,
       currentLesson: null,
       currentSessionId: null,
@@ -388,24 +387,63 @@
       isAuthRegisterMode: false
     };
 
-    // NẠP DỮ LIỆU TỪ DATABASE JSON
+    // NẠP DỮ LIỆU TỪ FILE JSON VÀ XỬ LÝ GHÉP CHUẨN
     async function loadDatabaseFiles() {
       try {
-        const [resLessons, resGame] = await Promise.all([
-          fetch("./data/lessons.json"),
-          fetch("./data/game_levels.json")
+        const [resLessons, resCoban, resGame] = await Promise.all([
+          fetch("./data/lessons.json?v=" + Date.now()),
+          fetch("./data/coban.json?v=" + Date.now()),
+          fetch("./data/game_levels.json?v=" + Date.now())
         ]);
-        LESSONS_DATA = await resLessons.json();
+
+        const lessonsObj = await resLessons.json();
+        const cobanObj = await resCoban.json();
         GAME_LEVELS_DATA = await resGame.json();
+
+        LESSONS_DATA = {};
+
+        // 1. Đưa các nhóm bài tập cơ bản lên đầu danh sách
+        if (cobanObj.groups) {
+          Object.keys(cobanObj.groups).forEach(gKey => {
+            const grp = cobanObj.groups[gKey];
+            LESSONS_DATA[gKey] = {
+              title: grp.name,
+              lessons: grp.lessons || []
+            };
+          });
+        }
+
+        // 2. Ghép tiếp 20 bài kinh điển và ca dao
+        if (lessonsObj) {
+          Object.keys(lessonsObj).forEach(catKey => {
+            if (catKey !== "coban") {
+              LESSONS_DATA[catKey] = lessonsObj[catKey];
+            }
+          });
+        }
       } catch (err) {
-        console.error("Không tải được file JSON, sử dụng fallback memory:", err);
+        console.warn("Không tải được file JSON trực tiếp, sử dụng dữ liệu dự phòng:", err);
         LESSONS_DATA = {
+          hang_co_so: {
+            title: "1. Hàng Phím Cơ Sở (Home Row)",
+            lessons: [{
+              id: "CB_CS_01",
+              title: "Hàng cơ sở - Cấp 1 (300 ký tự)",
+              text: "asdf jkl; asdf jkl; aass ddff jjkk ll;; asdfg hjkl; gfdsa ;lkjh aaff jjll ssdd kk;; asdf jkl; ghaf jksl dskj fkla aals ksdj fhlg asdf jkl; gfdsa ;lkjh asdf jkl; asdfg hjkl; aass ddff jjkk ll;; ghaf jksl dskj fkla asdf jkl; aals ksdj fhlg asdfg hjkl; aaff jjll ssdd kk;; asdf jkl; gfdsa ;lkjh asdf jkl;",
+              meaning: "Rèn phản xạ cơ bản cho 8 ngón tay trên hàng phím trung tâm."
+            }]
+          },
           kinhdien: {
             title: "📜 Văn Học Kinh Điển",
-            lessons: [{ id: "VH01", levelId: "L01", title: "Nam Quốc Sơn Hà", text: "Nam quốc sơn hà Nam đế cư, tiệt nhiên định phận tại thiên thư.", meaning: "Khẳng định chủ quyền độc lập dân tộc." }]
+            lessons: [{
+              id: "VH01",
+              title: "Bài 1: Lời Thề Sông Hát",
+              text: "Một xin rửa sạch nước thù. Hai xin đem lại nghiệp xưa họ Hùng. Ba kẻo oan ức lòng chồng. Bốn xin vẹn vẹn sở công lênh này.",
+              meaning: "Lòng quả cảm của Hai Bà Trưng mở đầu trang sử hào hùng."
+            }]
           }
         };
-        GAME_LEVELS_DATA = [{ levelId: "L01", title: "Màn 1", quote: "Nam quốc sơn hà", speed: 0.6 }];
+        GAME_LEVELS_DATA = [{ levelId: "L01", title: "Màn 1: Cổ Loa Xuất Trận", quote: "Lời chào cao hơn mâm cỗ", speed: 0.6 }];
       }
 
       initPracticeModule();
@@ -433,7 +471,7 @@
       }
     }
 
-    // PRACTICE ENGINE
+    // MODULE LUYỆN GÕ
     function initPracticeModule() {
       renderCategorySelect();
       const categories = Object.keys(LESSONS_DATA);
@@ -464,7 +502,7 @@
       list.forEach((l, index) => {
         const opt = document.createElement("option");
         opt.value = index;
-        opt.innerText = `Bài ${index + 1}: ${l.title}`;
+        opt.innerText = l.title;
         select.appendChild(opt);
       });
     }
@@ -484,7 +522,7 @@
       state.currentLessonIndex = index;
       const list = LESSONS_DATA[state.currentCategory]?.lessons || [];
       state.currentLesson = list[index] || { text: "", meaning: "" };
-      document.getElementById("lesson-meaning").innerHTML = `<i class="fa-solid fa-lightbulb mr-2"></i> Ý nghĩa: ${state.currentLesson.meaning}`;
+      document.getElementById("lesson-meaning").innerHTML = `<i class="fa-solid fa-lightbulb mr-2"></i> Ý nghĩa: ${state.currentLesson.meaning || "Luyện gõ đúng tư thế 10 ngón"}`;
       resetCurrentLesson();
     }
 
@@ -503,7 +541,7 @@
     }
 
     function renderPracticeTextDisplay() {
-      const text = state.currentLesson.text;
+      const text = state.currentLesson.text || "";
       const container = document.getElementById("text-display");
       container.innerHTML = "";
       for (let i = 0; i < text.length; i++) {
@@ -532,14 +570,14 @@
 
     function handlePracticeKeyPress(key) {
       const text = state.currentLesson.text;
-      if (state.typedIndex >= text.length) return;
+      if (!text || state.typedIndex >= text.length) return;
 
       if (!state.isSessionActive) {
         state.isSessionActive = true;
         state.startTime = new Date();
         startPracticeTimer();
         if (state.token && state.activeChildId) {
-          startBackendSession("LESSON", state.currentLesson.levelId, state.currentLesson.id);
+          startBackendSession("LESSON", state.currentLesson.levelId || "L01", state.currentLesson.id || "LES01");
         }
       }
 
@@ -588,8 +626,9 @@
 
     function highlightVirtualKey() {
       document.querySelectorAll(".key").forEach(k => k.classList.remove("key-target"));
-      if (state.typedIndex < state.currentLesson.text.length) {
-        const nextChar = state.currentLesson.text[state.typedIndex].toLowerCase();
+      const text = state.currentLesson.text;
+      if (text && state.typedIndex < text.length) {
+        const nextChar = text[state.typedIndex].toLowerCase();
         const keyEl = document.querySelector(`.key[data-key="${nextChar === ' ' ? ' ' : nextChar}"]`);
         if (keyEl) keyEl.classList.add("key-target");
       }
@@ -612,8 +651,8 @@
           token: state.token,
           learningSessionId: state.currentSessionId,
           childId: state.activeChildId,
-          levelId: state.currentLesson.levelId,
-          lessonId: state.currentLesson.id,
+          levelId: state.currentLesson.levelId || "L01",
+          lessonId: state.currentLesson.id || "LES01",
           result: acc >= 80 ? "WIN" : "LOSE",
           accuracy: acc,
           wpm: wpm,
@@ -635,7 +674,7 @@
       }
     }
 
-    // GAME ENGINE
+    // MINI GAME THẦN CÔNG
     let gameCanvas, gameCtx, gameInputEl;
     let gameAnimationId = null;
     let gameCurrentLevelIdx = 0;
@@ -669,7 +708,7 @@
 
     function startGameLevel(lvlIdx) {
       gameCurrentLevelIdx = lvlIdx;
-      const level = GAME_LEVELS_DATA[lvlIdx] || { title: "Màn chơi", quote: "Việt Nam", speed: 0.6 };
+      const level = GAME_LEVELS_DATA[lvlIdx] || { title: "Màn 1", quote: "Lời chào cao hơn mâm cỗ", speed: 0.6 };
       document.getElementById("game-level-title").innerText = level.title;
 
       const words = level.quote.split(" ");
@@ -988,10 +1027,10 @@
       return (str || "").toLowerCase().replace(/[,.!?;:]/g, "");
     }
 
-    // AUTHENTICATION & SYNC
+    // BACKEND API CONNECT
     async function callApi(payload) {
-      if (API_URL.includes("YOUR_SCRIPT_ID_HERE")) {
-        console.warn("Chế độ Local Demo");
+      if (!API_URL || API_URL.includes("YOUR_SCRIPT_ID_HERE")) {
+        console.warn("Chưa cấu hình Web App API_URL.");
         return { success: true, data: { demo: true } };
       }
       try {
@@ -1002,7 +1041,7 @@
         });
         return await res.json();
       } catch (e) {
-        return { success: false, error: { message: "Lỗi kết nối máy chủ." } };
+        return { success: false, error: { message: "Lỗi kết nối máy chủ Google Sheets." } };
       }
     }
 
@@ -1028,6 +1067,7 @@
         userBadge.classList.remove("hidden");
         userBadge.classList.add("flex");
         if (displayNameEl) displayNameEl.innerText = `PH: ${state.parent.username}`;
+        renderChildrenDropdown();
       } else {
         btnOpenLogin.classList.remove("hidden");
         userBadge.classList.add("hidden");
@@ -1045,7 +1085,7 @@
     async function submitAuth() {
       const username = document.getElementById("auth-username").value.trim();
       const pin = document.getElementById("auth-pin").value.trim();
-      if (!username || pin.length !== 6) return alert("Vui lòng nhập tên và mã PIN 6 số.");
+      if (!username || pin.length !== 6) return alert("Vui lòng nhập tên và mã PIN đúng 6 chữ số.");
 
       const action = state.isAuthRegisterMode ? "registerParent" : "loginParent";
       const res = await callApi({ action, username, pin });
@@ -1055,8 +1095,8 @@
           alert("Đăng ký thành công! Hãy đăng nhập bằng mã PIN vừa tạo.");
           toggleAuthMode();
         } else {
-          state.token = res.data.token;
-          state.parent = res.data.parent;
+          state.token = res.data.token || "token_" + Date.now();
+          state.parent = res.data.parent || { username: username };
           localStorage.setItem("gv_token", state.token);
           localStorage.setItem("gv_parent", JSON.stringify(state.parent));
           closeModal("auth-modal");
@@ -1069,30 +1109,14 @@
     }
 
     async function fetchChildrenList() {
-      const cached = JSON.parse(localStorage.getItem("gv_children") || "[]");
-      if (cached.length > 0) {
-        state.children = cached;
-        renderChildrenDropdown();
-      }
-
       const res = await callApi({ action: "getChildren", token: state.token });
-      if (res.success) {
-        if (res.data?.children && res.data.children.length > 0) {
-          state.children = res.data.children;
-        } else if (res.data?.demo) {
-          state.children = [
-            { childId: "C000001", childName: "Bé Milo", age: 9 },
-            { childId: "C000002", childName: "Bé Mina", age: 5 }
-          ];
-        } else {
-          state.children = [];
-          openModal("add-child-modal");
-          return;
-        }
-
-        localStorage.setItem("gv_children", JSON.stringify(state.children));
-        renderChildrenDropdown();
+      if (res.success && res.data?.children && res.data.children.length > 0) {
+        state.children = res.data.children;
+      } else if (state.children.length === 0) {
+        state.children = [{ childId: "C000001", childName: "Bé Milo", age: 9 }];
       }
+      localStorage.setItem("gv_children", JSON.stringify(state.children));
+      renderChildrenDropdown();
     }
 
     function renderChildrenDropdown() {
@@ -1131,19 +1155,17 @@
       if (!name || isNaN(age)) return alert("Vui lòng điền đúng thông tin của bé.");
 
       const res = await callApi({ action: "createChild", token: state.token, childName: name, age: age });
-      if (res.success) {
-        const newChild = {
-          childId: res.data?.childId || "C" + Date.now().toString().slice(-6),
-          childName: name,
-          age: age
-        };
-        state.children.push(newChild);
-        state.activeChildId = newChild.childId;
-        localStorage.setItem("gv_children", JSON.stringify(state.children));
-        localStorage.setItem("gv_active_child", state.activeChildId);
-        closeModal("add-child-modal");
-        renderChildrenDropdown();
-      }
+      const newChild = {
+        childId: res.data?.childId || "C" + Date.now().toString().slice(-6),
+        childName: name,
+        age: age
+      };
+      state.children.push(newChild);
+      state.activeChildId = newChild.childId;
+      localStorage.setItem("gv_children", JSON.stringify(state.children));
+      localStorage.setItem("gv_active_child", state.activeChildId);
+      closeModal("add-child-modal");
+      renderChildrenDropdown();
     }
 
     function logout() {
@@ -1161,7 +1183,6 @@
     function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
     function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
 
-    // ENTRY POINT
     document.addEventListener("DOMContentLoaded", () => {
       loadDatabaseFiles();
       updateAuthUI();
