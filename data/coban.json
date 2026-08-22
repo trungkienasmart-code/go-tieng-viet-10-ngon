@@ -1,0 +1,144 @@
+{
+  "title": "⌨️ Luyện Ngón Cơ Bản & Quy Tắc Telex",
+  "groups": {
+    "hang_co_so": {
+      "name": "1. Hàng Phím Cơ Sở (Home Row)",
+      "description": "Luyện 8 ngón tay đặt chuẩn tại A S D F (tay trái) và J K L ; (tay phải), mở rộng ngón trỏ sang G và H.",
+      "lessons": [
+        {
+          "id": "CB_CS_01",
+          "title": "Hàng cơ sở - Cấp 1 (300 ký tự)",
+          "length": 300,
+          "text": "asdf jkl; asdf jkl; aass ddff jjkk ll;; asdfg hjkl; gfdsa ;lkjh aaff jjll ssdd kk;; asdf jkl; ghaf jksl dskj fkla aals ksdj fhlg asdf jkl; gfdsa ;lkjh asdf jkl; asdfg hjkl; aass ddff jjkk ll;; ghaf jksl dskj fkla asdf jkl; aals ksdj fhlg asdfg hjkl; aaff jjll ssdd kk;; asdf jkl; gfdsa ;lkjh asdf jkl;",
+          "meaning": "Rèn phản xạ cơ bản cho 8 ngón tay trên hàng phím trung tâm."
+        },
+        {
+          "id": "CB_CS_02",
+          "title": "Hàng cơ sở - Cấp 2 (600 ký tự)",
+          "length": 600,
+          "text": "asdfg hjkl; gfdsa ;lkjh asdf jkl; aass ddff jjkk ll;; ghaf jksl dskj fkla aals ksdj fhlg aaff jjll ssdd kk;; asdf jkl; gfdsa ;lkjh fads jlk; ghaf sdkl aaff jjll ssdd kk;; asdfg hjkl; aals ksdj fhlg gfdsa ;lkjh asdf jkl; dskj fkla aass ddff jjkk ll;; ghaf jksl asdfg hjkl; aaff jjll ssdd kk;; fads jlk; aals ksdj fhlg asdf jkl; gfdsa ;lkjh ghaf sdkl asdfg hjkl; aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; gfdsa ;lkjh asdf jkl; aals ksdj fhlg ghaf jksl asdfg hjkl; fads jlk; aass ddff jjkk ll;; dskj fkla asdf jkl; ghaf sdkl aaff jjll ssdd kk;; aals ksdj fhlg asdfg hjkl; gfdsa ;lkjh asdf jkl; aass ddff jjkk ll;;",
+          "meaning": "Tăng cường độ linh hoạt cho ngón trỏ khi vươn sang phím G và H."
+        },
+        {
+          "id": "CB_CS_03",
+          "title": "Hàng cơ sở - Cấp 3 (1200 ký tự)",
+          "length": 1200,
+          "text": "asdfg hjkl; gfdsa ;lkjh aass ddff jjkk ll;; ghaf jksl dskj fkla aals ksdj fhlg aaff jjll ssdd kk;; fads jlk; ghaf sdkl asdfg hjkl; gfdsa ;lkjh asdf jkl; dskj fkla aals ksdj fhlg aass ddff jjkk ll;; aaff jjll ssdd kk;; ghaf jksl asdfg hjkl; fads jlk; gfdsa ;lkjh asdf jkl; ghaf sdkl aals ksdj fhlg aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; asdfg hjkl; gfdsa ;lkjh asdf jkl; ghaf jksl aals ksdj fhlg fads jlk; aass ddff jjkk ll;; dskj fkla ghaf sdkl aaff jjll ssdd kk;; asdfg hjkl; gfdsa ;lkjh asdf jkl; aals ksdj fhlg ghaf jksl aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; fads jlk; gfdsa ;lkjh asdfg hjkl; ghaf sdkl asdf jkl; aals ksdj fhlg aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; ghaf jksl asdfg hjkl; fads jlk; gfdsa ;lkjh asdf jkl; aals ksdj fhlg ghaf sdkl aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; asdfg hjkl; gfdsa ;lkjh asdf jkl; ghaf jksl aals ksdj fhlg fads jlk; aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; ghaf sdkl asdfg hjkl; gfdsa ;lkjh asdf jkl; aals ksdj fhlg aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; ghaf jksl asdfg hjkl; fads jlk; gfdsa ;lkjh asdf jkl; ghaf sdkl aals ksdj fhlg aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; asdfg hjkl; gfdsa ;lkjh asdf jkl;",
+          "meaning": "Luyện sức bền cơ tay và hình thành trí nhớ cơ bắp tuyệt đối trên hàng cơ sở."
+        }
+      ]
+    },
+
+    "hang_tren": {
+      "name": "2. Hàng Phím Trên (Top Row)",
+      "description": "Luyện vươn các ngón tay từ hàng cơ sở lên hàng Q W E R T Y U I O P.",
+      "lessons": [
+        {
+          "id": "CB_HT_01",
+          "title": "Hàng trên - Cấp 1 (300 ký tự)",
+          "length": 300,
+          "text": "qwer uiop qwert yuiop qqww eerr uuii oopp qruo weti qpye wrot qwer uiop trewq poiuy qwer uiop qwtp eury qwer uiop qqww eerr uuii oopp qruo weti qwert yuiop trewq poiuy qpye wrot qwer uiop qwtp eury qqww eerr uuii oopp qwer uiop trewq poiuy qruo weti qwert yuiop qpye wrot qwer uiop qwtp eury qwer uiop",
+          "meaning": "Tập vươn ngón chính xác lên hàng phím trên mà không rời vị trí gốc."
+        },
+        {
+          "id": "CB_HT_02",
+          "title": "Hàng trên - Cấp 2 (600 ký tự)",
+          "length": 600,
+          "text": "qwert yuiop trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qpye wrot qwtp eury qwert yuiop qqww eerr uuii oopp qwer uiop trewq poiuy qruo weti qpye wrot qwtp eury qwert yuiop trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwtp eury trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwtp eury qwer uiop trewq poiuy qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy qwtp eury qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy qwtp eury qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy",
+          "meaning": "Phối hợp nhịp nhàng các ngón áp út và ngón út khi vươn lên phím Q, W, O, P."
+        },
+        {
+          "id": "CB_HT_03",
+          "title": "Hàng trên - Cấp 3 (1200 ký tự)",
+          "length": 1200,
+          "text": "qwert yuiop trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qpye wrot qwtp eury qwert yuiop trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qpye wrot qwtp eury qwert yuiop trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwtp eury trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwtp eury qwer uiop trewq poiuy qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy qwtp eury qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy qwtp eury qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy qwert yuiop trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qpye wrot qwtp eury qwert yuiop trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qpye wrot qwtp eury qwert yuiop trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwtp eury trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwtp eury qwer uiop trewq poiuy qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy qwtp eury qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy qwtp eury qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy",
+          "meaning": "Luyện tập cường độ cao giúp ngón tay di chuyển thanh thoát giữa hai hàng phím."
+        }
+      ]
+    },
+
+    "hang_duoi": {
+      "name": "3. Hàng Phím Dưới (Bottom Row)",
+      "description": "Luyện kéo các ngón tay xuống hàng Z X C V B N M , . /.",
+      "lessons": [
+        {
+          "id": "CB_HD_01",
+          "title": "Hàng dưới - Cấp 1 (300 ký tự)",
+          "length": 300,
+          "text": "zxcv bnm, zxcvb nm,./ zzxx ccvv bbn m,,. zvm, xcb. znb/ zxcv bnm, /.,mn bvcxz zxcv bnm, zxbn cvm, zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ /.,mn bvcxz znb/ zxcv bnm, zxbn cvm, zzxx ccvv bbn m,,. zxcv bnm, /.,mn bvcxz zvm, xcb. zxcvb nm,./ znb/ zxcv bnm, zxbn cvm, zxcv bnm, zzxx ccvv bbn m,,.",
+          "meaning": "Tập phản xạ gập ngón tay chuẩn xác xuống hàng phím dưới cùng."
+        },
+        {
+          "id": "CB_HD_02",
+          "title": "Hàng dưới - Cấp 2 (600 ký tự)",
+          "length": 600,
+          "text": "zxcvb nm,./ /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. znb/ zxbn cvm, zxcvb nm,./ zzxx ccvv bbn m,,. zxcv bnm, /.,mn bvcxz zvm, xcb. znb/ zxbn cvm, zxcvb nm,./ /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxbn cvm, /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxbn cvm, zxcv bnm, /.,mn bvcxz zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxbn cvm, zxcv bnm, /.,mn bvcxz zxbn cvm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxcv bnm, /.,mn bvcxz zxbn cvm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxcv bnm, /.,mn bvcxz",
+          "meaning": "Làm chủ độ chính xác khi gõ phím dấu phẩy, chấm và gạch chéo."
+        },
+        {
+          "id": "CB_HD_03",
+          "title": "Hàng dưới - Cấp 3 (1200 ký tự)",
+          "length": 1200,
+          "text": "zxcvb nm,./ /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. znb/ zxbn cvm, zxcvb nm,./ /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. znb/ zxbn cvm, zxcvb nm,./ /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxbn cvm, /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxbn cvm, zxcv bnm, /.,mn bvcxz zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxbn cvm, zxcv bnm, /.,mn bvcxz zxbn cvm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxcv bnm, /.,mn bvcxz zxbn cvm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxcv bnm, /.,mn bvcxz zxcvb nm,./ /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. znb/ zxbn cvm, zxcvb nm,./ /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. znb/ zxbn cvm, zxcvb nm,./ /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxbn cvm, /.,mn bvcxz zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxbn cvm, zxcv bnm, /.,mn bvcxz zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxbn cvm, zxcv bnm, /.,mn bvcxz zxbn cvm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxcv bnm, /.,mn bvcxz zxbn cvm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ znb/ zxcv bnm, /.,mn bvcxz",
+          "meaning": "Luyện thói quen không nhìn bàn phím khi gõ hàng phím dưới."
+        }
+      ]
+    },
+
+    "hang_so": {
+      "name": "4. Hàng Phím Số (Number Row)",
+      "description": "Luyện vươn các ngón tay lên hàng số 1 2 3 4 5 6 7 8 9 0.",
+      "lessons": [
+        {
+          "id": "CB_SO_01",
+          "title": "Hàng số - Cấp 1 (300 ký tự)",
+          "length": 300,
+          "text": "1234 7890 12345 67890 1122 3344 7788 9900 1590 2468 1357 2468 1234 7890 0987 54321 1234 7890 1470 2580 3690 1122 3344 7788 9900 1590 2468 12345 67890 0987 54321 1357 2468 1234 7890 1470 2580 1122 3344 7788 9900 1234 7890 0987 54321 1590 2468 12345 67890 1357 2468 1234 7890 1470 2580 3690",
+          "meaning": "Luyện ngón vươn xa lên hàng số mà vẫn giữ được vị trí tay cơ sở."
+        },
+        {
+          "id": "CB_SO_02",
+          "title": "Hàng số - Cấp 2 (600 ký tự)",
+          "length": 600,
+          "text": "12345 67890 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 1357 2468 1470 2580 3690 12345 67890 1122 3344 7788 9900 1234 7890 0987 54321 1590 2468 1357 2468 1470 2580 3690 12345 67890 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 12345 67890 1357 2468 1470 2580 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 12345 67890 1357 2468 1470 2580 3690 1234 7890 0987 54321 1122 3344 7788 9900 1590 2468 12345 67890 1357 2468 1234 7890 0987 54321 1470 2580 3690 1122 3344 7788 9900 1590 2468 12345 67890",
+          "meaning": "Nhập liệu dãy số nhanh chóng, chính xác."
+        },
+        {
+          "id": "CB_SO_03",
+          "title": "Hàng số - Cấp 3 (1200 ký tự)",
+          "length": 1200,
+          "text": "12345 67890 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 1357 2468 1470 2580 3690 12345 67890 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 1357 2468 1470 2580 3690 12345 67890 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 12345 67890 1357 2468 1470 2580 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 12345 67890 1357 2468 1470 2580 3690 1234 7890 0987 54321 1122 3344 7788 9900 1590 2468 12345 67890 1357 2468 1234 7890 0987 54321 1470 2580 3690 1122 3344 7788 9900 1590 2468 12345 67890 12345 67890 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 1357 2468 1470 2580 3690 12345 67890 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 1357 2468 1470 2580 3690 12345 67890 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 12345 67890 1357 2468 1470 2580 0987 54321 1234 7890 1122 3344 7788 9900 1590 2468 12345 67890 1357 2468 1470 2580 3690 1234 7890 0987 54321 1122 3344 7788 9900 1590 2468 12345 67890 1357 2468 1234 7890 0987 54321 1470 2580 3690 1122 3344 7788 9900 1590 2468 12345 67890",
+          "meaning": "Tạo trí nhớ cơ bắp trọn vẹn cho hàng số từ 1 đến 0."
+        }
+      ]
+    },
+
+    "quy_tac_telex": {
+      "name": "5. Quy Tắc Gõ Dấu Telex Tiếng Việt",
+      "description": "Luyện tổ hợp gõ dấu tiếng Việt: s (sắc), f (huyền), r (hỏi), x (ngã), j (nặng), aa (â), ee (ê), oo (ô), aw (ă), ow (ơ), uw (ư), dd (đ).",
+      "lessons": [
+        {
+          "id": "CB_TL_01",
+          "title": "Tổ hợp Telex - Cấp 1 (300 ký tự)",
+          "length": 300,
+          "text": "as af ar ax aj aa ee oo aw ow uw dd caas caaf caar caax caaj toos toof toor toox tooj tieengs tieengf tieengr tieengx tieengj ddawngs ddawngf ddawngr ddawngx ddawngj vawns vawnf vawnr vawnx vawnj dduowngs dduowngf dduowngr dduowngx dduowngj aas eef oor uwr ddx caas toor tieengj ddawngs vawnr dduowngf",
+          "meaning": "Làm quen chuỗi gõ Telex nguyên âm và dấu thanh."
+        },
+        {
+          "id": "CB_TL_02",
+          "title": "Tổ hợp Telex - Cấp 2 (600 ký tự)",
+          "length": 600,
+          "text": "as af ar ax aj aa ee oo aw ow uw dd caas toof tieengr ddawngx dduowngj vawnr khoor thuyeens nguoofn nghiax dduwawj tieengs vieetj nam ddaats nuowsc con dduowfng hojc taapj rean luyeenj ddajco dduwsc tris tueej nghij luwjc caas toof tieengr ddawngx dduowngj vawnr khoor thuyeens nguoofn nghiax dduwawj tieengs vieetj nam ddaats nuowsc con dduowfng hojc taapj rean luyeenj ddajco dduwsc tris tueej nghij luwjc as af ar ax aj aa ee oo aw ow uw dd caas toof tieengr ddawngx dduowngj vawnr khoor thuyeens nguoofn nghiax dduwawj tieengs vieetj nam ddaats nuowsc con dduowfng hojc taapj rean luyeenj ddajco dduwsc",
+          "meaning": "Rèn phản xạ kết hợp dấu mũ, dấu móc và dấu thanh liên tục."
+        },
+        {
+          "id": "CB_TL_03",
+          "title": "Tổ hợp Telex - Cấp 3 (1200 ký tự)",
+          "length": 1200,
+          "text": "as af ar ax aj aa ee oo aw ow uw dd caas toof tieengr ddawngx dduowngj vawnr khoor thuyeens nguoofn nghiax dduwawj tieengs vieetj nam ddaats nuowsc con dduowfng hojc taapj rean luyeenj ddajco dduwsc tris tueej nghij luwjc as af ar ax aj aa ee oo aw ow uw dd caas toof tieengr ddawngx dduowngj vawnr khoor thuyeens nguoofn nghiax dduwawj tieengs vieetj nam ddaats nuowsc con dduowfng hojc taapj rean luyeenj ddajco dduwsc tris tueej nghij luwjc caas toof tieengr ddawngx dduowngj vawnr khoor thuyeens nguoofn nghiax dduwawj tieengs vieetj nam ddaats nuowsc con dduowfng hojc taapj rean luyeenj ddajco dduwsc tris tueej nghij luwjc as af ar ax aj aa ee oo aw ow uw dd caas toof tieengr ddawngx dduowngj vawnr khoor thuyeens nguoofn nghiax dduwawj tieengs vieetj nam ddaats nuowsc con dduowfng hojc taapj rean luyeenj ddajco dduwsc tris tueej nghij luwjc as af ar ax aj aa ee oo aw ow uw dd caas toof tieengr ddawngx dduowngj vawnr khoor thuyeens nguoofn nghiax dduwawj tieengs vieetj nam ddaats nuowsc con dduowfng hojc taapj rean luyeenj ddajco dduwsc tris tueej nghij luwjc caas toof tieengr ddawngx dduowngj vawnr khoor thuyeens nguoofn nghiax dduwawj tieengs vieetj nam ddaats nuowsc con dduowfng hojc taapj rean luyeenj ddajco dduwsc tris tueej nghij luwjc as af ar ax aj aa ee oo aw ow uw dd caas toof tieengr ddawngx dduowngj vawnr khoor thuyeens",
+          "meaning": "Luyện gõ Telex tốc độ cao, loại bỏ hoàn toàn tình trạng gõ nhầm dấu hoặc khựng tay."
+        }
+      ]
+    }
+  }
+}
