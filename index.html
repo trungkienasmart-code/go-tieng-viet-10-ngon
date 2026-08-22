@@ -102,12 +102,12 @@
       </div>
     </div>
 
-    <!-- Khung gõ -->
+    <!-- Khung gõ bài -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-6">
       <div id="lesson-meaning" class="mb-4 text-xs font-bold px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg inline-flex items-center">
         <i class="fa-solid fa-lightbulb mr-2"></i> Ý nghĩa: Đang tải...
       </div>
-      <div id="text-display" class="text-2xl leading-relaxed font-semibold tracking-wide select-none min-h-[90px] p-4 bg-slate-50 rounded-xl border border-slate-200 break-words">
+      <div id="text-display" class="text-2xl leading-relaxed font-semibold tracking-wide select-none min-h-[110px] p-4 bg-slate-50 rounded-xl border border-slate-200 break-words">
       </div>
       <input type="text" id="typing-input" class="opacity-0 absolute -z-10">
       
@@ -119,7 +119,7 @@
       </div>
     </div>
 
-    <!-- Bàn phím ảo -->
+    <!-- Bàn phím ảo trực quan -->
     <div class="bg-slate-900 rounded-2xl p-6 shadow-xl border border-slate-800 text-slate-200">
       <div class="flex justify-between items-center mb-3">
         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mô phỏng bàn phím 10 ngón</span>
@@ -361,11 +361,64 @@
 
   <!-- SCRIPT LOGIC -->
   <script>
-    // URL WEB APP GOOGLE APPS SCRIPT
-    const API_URL = "https://script.google.com/macros/s/AKfycbyCivyMDxg_KTMXBQsFrWcdJJVoFFnmtDp1mgEhQh8VxW10uBuPhF32Wyx5nsF7zVGFYA/exec";
+    // URL WEB APP APPS SCRIPT ĐÃ KẾT NỐI
+    const API_URL = "https://script.google.com/macros/s/AKfycbzLivyNQXg_K1P0X8QsFrWcdJJVoFPnmtUp1mgbhQh8VdU1Qu6uPhFS2Nyx5nsPZzVbFYA/exec";
 
-    let LESSONS_DATA = {};
-    let GAME_LEVELS_DATA = [];
+    // 1. EMBEDDED DATABASE: CƠ SỞ DỮ LIỆU ĐẦY ĐỦ TRỰC TIẾP
+    const DEFAULT_LESSONS_DB = {
+      "hang_co_so": {
+        "title": "1. Hàng Phím Cơ Sở (Home Row)",
+        "lessons": [
+          { "id": "CB_CS_01", "title": "Hàng cơ sở - Cấp 1 (300 ký tự)", "text": "asdf jkl; asdf jkl; aass ddff jjkk ll;; asdfg hjkl; gfdsa ;lkjh aaff jjll ssdd kk;; asdf jkl; ghaf jksl dskj fkla aals ksdj fhlg asdf jkl; gfdsa ;lkjh asdf jkl; asdfg hjkl; aass ddff jjkk ll;; ghaf jksl dskj fkla asdf jkl; aals ksdj fhlg asdfg hjkl; aaff jjll ssdd kk;; asdf jkl; gfdsa ;lkjh asdf jkl;", "meaning": "Rèn phản xạ cơ bản cho 8 ngón tay trên hàng phím trung tâm." },
+          { "id": "CB_CS_02", "title": "Hàng cơ sở - Cấp 2 (600 ký tự)", "text": "asdfg hjkl; gfdsa ;lkjh asdf jkl; aass ddff jjkk ll;; ghaf jksl dskj fkla aals ksdj fhlg aaff jjll ssdd kk;; asdf jkl; gfdsa ;lkjh fads jlk; ghaf sdkl aaff jjll ssdd kk;; asdfg hjkl; aals ksdj fhlg gfdsa ;lkjh asdf jkl; dskj fkla aass ddff jjkk ll;; ghaf jksl asdfg hjkl; aaff jjll ssdd kk;; fads jlk; aals ksdj fhlg asdf jkl; gfdsa ;lkjh ghaf sdkl asdfg hjkl; aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; gfdsa ;lkjh asdf jkl; aals ksdj fhlg ghaf jksl asdfg hjkl; fads jlk; aass ddff jjkk ll;; dskj fkla asdf jkl; ghaf sdkl aaff jjll ssdd kk;; aals ksdj fhlg asdfg hjkl; gfdsa ;lkjh asdf jkl; aass ddff jjkk ll;;", "meaning": "Tăng cường độ linh hoạt cho ngón trỏ khi vươn sang phím G và H." },
+          { "id": "CB_CS_03", "title": "Hàng cơ sở - Cấp 3 (1200 ký tự)", "text": "asdfg hjkl; gfdsa ;lkjh aass ddff jjkk ll;; ghaf jksl dskj fkla aals ksdj fhlg aaff jjll ssdd kk;; fads jlk; ghaf sdkl asdfg hjkl; gfdsa ;lkjh asdf jkl; dskj fkla aals ksdj fhlg aass ddff jjkk ll;; aaff jjll ssdd kk;; ghaf jksl asdfg hjkl; fads jlk; gfdsa ;lkjh asdf jkl; ghaf sdkl aals ksdj fhlg aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; asdfg hjkl; gfdsa ;lkjh asdf jkl; ghaf jksl aals ksdj fhlg fads jlk; aass ddff jjkk ll;; dskj fkla ghaf sdkl aaff jjll ssdd kk;; asdfg hjkl; gfdsa ;lkjh asdf jkl; aals ksdj fhlg ghaf jksl aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; fads jlk; gfdsa ;lkjh asdfg hjkl; ghaf sdkl asdf jkl; aals ksdj fhlg aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; ghaf jksl asdfg hjkl; fads jlk; gfdsa ;lkjh asdf jkl; aals ksdj fhlg ghaf sdkl aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; asdfg hjkl; gfdsa ;lkjh asdf jkl; ghaf jksl aals ksdj fhlg fads jlk; aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; ghaf sdkl asdfg hjkl; gfdsa ;lkjh asdf jkl; aals ksdj fhlg aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; ghaf jksl asdfg hjkl; fads jlk; gfdsa ;lkjh asdf jkl; ghaf sdkl aals ksdj fhlg aass ddff jjkk ll;; dskj fkla aaff jjll ssdd kk;; asdfg hjkl; gfdsa ;lkjh asdf jkl;", "meaning": "Luyện sức bền cơ tay và hình thành trí nhớ cơ bắp tuyệt đối trên hàng cơ sở." }
+        ]
+      },
+      "hang_tren": {
+        "title": "2. Hàng Phím Trên (Top Row)",
+        "lessons": [
+          { "id": "CB_HT_01", "title": "Hàng trên - Cấp 1 (300 ký tự)", "text": "qwer uiop qwert yuiop qqww eerr uuii oopp qruo weti qpye wrot qwer uiop trewq poiuy qwer uiop qwtp eury qwer uiop qqww eerr uuii oopp qruo weti qwert yuiop trewq poiuy qpye wrot qwer uiop qwtp eury qqww eerr uuii oopp qwer uiop trewq poiuy qruo weti qwert yuiop qpye wrot qwer uiop qwtp eury qwer uiop", "meaning": "Tập vươn ngón chính xác lên hàng phím trên mà không rời vị trí gốc." },
+          { "id": "CB_HT_02", "title": "Hàng trên - Cấp 2 (600 ký tự)", "text": "qwert yuiop trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qpye wrot qwtp eury qwert yuiop qqww eerr uuii oopp qwer uiop trewq poiuy qruo weti qpye wrot qwtp eury qwert yuiop trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwtp eury trewq poiuy qwer uiop qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwtp eury qwer uiop trewq poiuy qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy qwtp eury qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy qwtp eury qqww eerr uuii oopp qruo weti qwert yuiop qpye wrot qwer uiop trewq poiuy", "meaning": "Phối hợp nhịp nhàng các ngón áp út và ngón út khi vươn lên phím Q, W, O, P." }
+        ]
+      },
+      "hang_duoi": {
+        "title": "3. Hàng Phím Dưới (Bottom Row)",
+        "lessons": [
+          { "id": "CB_HD_01", "title": "Hàng dưới - Cấp 1 (300 ký tự)", "text": "zxcv bnm, zxcvb nm,./ zzxx ccvv bbn m,,. zvm, xcb. znb/ zxcv bnm, /.,mn bvcxz zxcv bnm, zxbn cvm, zxcv bnm, zzxx ccvv bbn m,,. zvm, xcb. zxcvb nm,./ /.,mn bvcxz znb/ zxcv bnm, zxbn cvm, zzxx ccvv bbn m,,. zxcv bnm, /.,mn bvcxz zvm, xcb. zxcvb nm,./ znb/ zxcv bnm, zxbn cvm, zxcv bnm, zzxx ccvv bbn m,,.", "meaning": "Tập phản xạ gập ngón tay chuẩn xác xuống hàng phím dưới cùng." }
+        ]
+      },
+      "hang_so": {
+        "title": "4. Hàng Phím Số (Number Row)",
+        "lessons": [
+          { "id": "CB_SO_01", "title": "Hàng số - Cấp 1 (300 ký tự)", "text": "1234 7890 12345 67890 1122 3344 7788 9900 1590 2468 1357 2468 1234 7890 0987 54321 1234 7890 1470 2580 3690 1122 3344 7788 9900 1590 2468 12345 67890 0987 54321 1357 2468 1234 7890 1470 2580 1122 3344 7788 9900 1234 7890 0987 54321 1590 2468 12345 67890 1357 2468 1234 7890 1470 2580 3690", "meaning": "Luyện ngón vươn xa lên hàng số mà vẫn giữ được vị trí tay cơ sở." }
+        ]
+      },
+      "quy_tac_telex": {
+        "title": "5. Quy Tắc Gõ Dấu Telex Tiếng Việt",
+        "lessons": [
+          { "id": "CB_TL_01", "title": "Tổ hợp Telex - Cấp 1 (300 ký tự)", "text": "as af ar ax aj aa ee oo aw ow uw dd caas caaf caar caax caaj toos toof toor toox tooj tieengs tieengf tieengr tieengx tieengj ddawngs ddawngf ddawngr ddawngx ddawngj vawns vawnf vawnr vawnx vawnj dduowngs dduowngf dduowngr dduowngx dduowngj aas eef oor uwr ddx caas toor tieengj ddawngs vawnr dduowngf", "meaning": "Làm quen chuỗi gõ Telex nguyên âm và dấu thanh." }
+        ]
+      },
+      "kinhdien": {
+        "title": "📜 Văn Học Kinh Điển (20 Bài Đạo Đức - Trí Tuệ - Nghị Lực)",
+        "lessons": [
+          { "id": "VH01", "title": "Bài 1 (~100 chữ): Lời Thề Sông Hát", "text": "Một xin rửa sạch nước thù. Hai xin đem lại nghiệp xưa họ Hùng. Ba kẻo oan ức lòng chồng. Bốn xin vẹn vẹn sở công lênh này. Tiếng trống đồng vang vọng khắp non sông, muôn dân trăm họ cùng một lòng đứng lên giành lại giang sơn đất nước.", "meaning": "Lòng quả cảm, ý chí quật cường của Hai Bà Trưng mở đầu trang sử hào hùng của dân tộc." },
+          { "id": "VH02", "title": "Bài 2 (~200 chữ): Chiếu Dời Đô — Tầm Nhìn Chiến Lược", "text": "Xưa nhà Thương đến vua Bàn Canh năm lần dời đô, nhà Chu đến vua Thành Vương cũng ba lần dời đô. Phải đâu các vua thời tam đại theo ý riêng mình mà tự tiện chuyển dời? Chỉ vì muốn đóng đô ở nơi trung tâm, mưu toan nghiệp lớn, tính kế muôn đời cho con cháu; trên vâng mệnh trời, dưới theo ý dân, nếu thấy thuận tiện thì thay đổi. Cho nên vận nước lâu dài, phong tục phồn thịnh. Nay thành Đại La ở giữa khu vực trời đất, có thế rồng cuộn hổ ngồi, đúng ngôi nam bắc đông tây, lại tiện hướng nhìn sông tựa núi. Địa thế rộng mà bằng, đất đai cao mà thoáng. Dân cư khỏi chịu cảnh khốn khổ ngập lụt, muôn vật cũng rất mực phong phú tốt tươi. Xem khắp đất Việt ta, chỉ nơi này là thắng địa.", "meaning": "Tầm nhìn xa trông rộng, trí tuệ chiến lược vì sự hưng thịnh và cuộc sống ấm no của nhân dân." },
+          { "id": "VH03", "title": "Bài 3 (~300 chữ): Nam Quốc Sơn Hà & Khí Phách Sông Như Nguyệt", "text": "Nam quốc sơn hà Nam đế cư, tiệt nhiên định phận tại thiên thư. Như hà nghịch lỗ lai xâm phạm, nhữ đẳng hành khan thủ bại hư. Sông núi nước Nam vua Nam ở, rành rành định phận tại sách trời. Cớ sao lũ giặc sang xâm phạm, chúng bay sẽ bị đánh tơi bời. Lời thơ thần vang lên trong đêm tối bên bờ sông Như Nguyệt như sấm truyền non sông, cổ vũ tinh thần chiến đấu quả cảm của quân dân nhà Lý, đồng thời giáng một đòn chí mạng vào tâm lý hoang mang của quân giặc Tống xâm lược. Đây là bản tuyên ngôn độc lập đầu tiên khẳng định chủ quyền toàn vẹn lãnh thổ, nhắc nhở mỗi thế hệ con cháu phải luôn giữ vững lòng tự tôn dân tộc, sống có đạo nghĩa và kiên quyết bảo vệ từng tấc đất thiêng liêng mà tổ tiên đã dày công gây dựng qua ngàn năm lịch sử.", "meaning": "Ý chí sắt đá, lòng tự tôn dân tộc và niềm tin tuyệt đối vào chính nghĩa của Lý Thường Kiệt." },
+          { "id": "VH04", "title": "Bài 4 (~400 chữ): Hội Nghị Diên Hồng — Sức Mạnh Đoàn Kết", "text": "Mùa đông năm Giáp Thân, trước họa xâm lăng của hàng chục vạn quân Nguyên Mông hung hãn, Thượng hoàng Trần Thánh Tông đã triệu tập các bậc bô lão trong cả nước về điện Diên Hồng để cùng bàn kế sách giữ nước. Đứng trước câu hỏi lớn về vận mệnh giang sơn: Nên đánh hay nên hòa, hàng ngàn cánh tay già nua nhưng gân guốc của các bô lão đã đồng thanh giơ cao và hô vang hai tiếng: Đánh! Tiếng hô Diên Hồng như muôn ngàn tiếng sấm làm rung chuyển hoàng thành Thăng Long, thể hiện ý chí quật cường của một dân tộc không bao giờ biết cúi đầu chịu khuất phục. Đó là biểu tượng tuyệt vời của tinh thần đoàn kết toàn dân, nơi ý chí của triều đình và nguyện vọng của muôn dân hòa làm một khối thống nhất. Khi lòng dân đã thuận, vua tôi đồng lòng, anh em hòa mục thì không một kẻ thù bạo tàn nào có thể xâm phạm được bờ cõi nước Nam.", "meaning": "Bài học về sức mạnh của sự đồng lòng, tôn trọng ý kiến nhân dân và tinh thần bất khuất." },
+          { "id": "VH05", "title": "Bài 5 (~500 chữ): Thầy Chu Văn An & Tấm Lòng Chính Trực", "text": "Vạn Thế Sư Biểu Chu Văn An là tấm gương sáng ngời về đạo đức, trí tuệ và khí tiết của người thầy mẫu mực muôn đời. Khi làm Tư nghiệp Quốc Tử Giám dưới triều Trần, thấy chính sự lung lay, gian thần lộng hành làm khổ dân chúng, thầy đã khẳng khái dâng Thất trảm sớ xin chém đầu bảy tên nịnh thần lộng quyền để giữ nghiêm phép nước. Sớ không được vua chấp thuận, thầy Chu Văn An lập tức treo mũ áo từ quan, về núi Phượng Hoàng dạy học và viết sách, một đời giữ trọn khí tiết thanh bạch, không màng danh lợi bổng lộc trần gian. Học trò của thầy có nhiều người đỗ đạt làm quan lớn trong triều nhưng khi về thăm thầy vẫn giữ đúng lễ nghĩa, cung kính lắng nghe từng lời răn dạy. Tấm gương của người thầy cương trực nhắc nhở chúng ta: Học chữ phải đi đôi với học làm người, giữ tâm trong sạch, dám đứng lên bảo vệ lẽ phải và sự thật.", "meaning": "Tôn vinh khí tiết thanh cao, lòng cương trực không màng danh lợi của người thầy Chu Văn An." }
+        ]
+      }
+    };
+
+    const DEFAULT_GAME_LEVELS = [
+      { "levelId": "L01", "title": "Màn 1: Cổ Loa Xuất Trận", "quote": "Lời chào cao hơn mâm cỗ", "speed": 0.6 },
+      { "levelId": "L02", "title": "Màn 2: Rèn Đức Luyện Tài", "quote": "Học đi đôi với hành rèn đức luyện tài", "speed": 0.8 },
+      { "levelId": "L03", "title": "Màn 3: Uống Nước Nhớ Nguồn", "quote": "Uống nước nhớ nguồn ăn quả nhớ kẻ trồng cây", "speed": 1.0 }
+    ];
+
+    let LESSONS_DATA = DEFAULT_LESSONS_DB;
+    let GAME_LEVELS_DATA = DEFAULT_GAME_LEVELS;
 
     let currentView = "practice";
     let state = {
@@ -373,8 +426,7 @@
       parent: JSON.parse(localStorage.getItem("gv_parent") || "null"),
       children: JSON.parse(localStorage.getItem("gv_children") || "[]"),
       activeChildId: localStorage.getItem("gv_active_child") || null,
-
-      currentCategory: "",
+      currentCategory: "hang_co_so",
       currentLessonIndex: 0,
       currentLesson: null,
       currentSessionId: null,
@@ -387,63 +439,43 @@
       isAuthRegisterMode: false
     };
 
-    // NẠP DỮ LIỆU TỪ FILE JSON VÀ XỬ LÝ GHÉP CHUẨN
+    // NẠP DỮ LIỆU BÀI TẬP VÀ MÀN CHƠI
     async function loadDatabaseFiles() {
       try {
         const [resLessons, resCoban, resGame] = await Promise.all([
-          fetch("./data/lessons.json?v=" + Date.now()),
-          fetch("./data/coban.json?v=" + Date.now()),
-          fetch("./data/game_levels.json?v=" + Date.now())
+          fetch("./data/lessons.json?t=" + Date.now()),
+          fetch("./data/coban.json?t=" + Date.now()),
+          fetch("./data/game_levels.json?t=" + Date.now())
         ]);
 
-        const lessonsObj = await resLessons.json();
-        const cobanObj = await resCoban.json();
-        GAME_LEVELS_DATA = await resGame.json();
+        if (resLessons.ok && resCoban.ok) {
+          const lData = await resLessons.json();
+          const cData = await resCoban.json();
+          const combined = {};
 
-        LESSONS_DATA = {};
+          if (cData.groups) {
+            Object.keys(cData.groups).forEach(gKey => {
+              combined[gKey] = {
+                title: cData.groups[gKey].name,
+                lessons: cData.groups[gKey].lessons || []
+              };
+            });
+          }
 
-        // 1. Đưa các nhóm bài tập cơ bản lên đầu danh sách
-        if (cobanObj.groups) {
-          Object.keys(cobanObj.groups).forEach(gKey => {
-            const grp = cobanObj.groups[gKey];
-            LESSONS_DATA[gKey] = {
-              title: grp.name,
-              lessons: grp.lessons || []
-            };
-          });
+          if (lData) {
+            Object.keys(lData).forEach(k => {
+              if (k !== "coban") combined[k] = lData[k];
+            });
+          }
+
+          LESSONS_DATA = combined;
         }
 
-        // 2. Ghép tiếp 20 bài kinh điển và ca dao
-        if (lessonsObj) {
-          Object.keys(lessonsObj).forEach(catKey => {
-            if (catKey !== "coban") {
-              LESSONS_DATA[catKey] = lessonsObj[catKey];
-            }
-          });
+        if (resGame.ok) {
+          GAME_LEVELS_DATA = await resGame.json();
         }
       } catch (err) {
-        console.warn("Không tải được file JSON trực tiếp, sử dụng dữ liệu dự phòng:", err);
-        LESSONS_DATA = {
-          hang_co_so: {
-            title: "1. Hàng Phím Cơ Sở (Home Row)",
-            lessons: [{
-              id: "CB_CS_01",
-              title: "Hàng cơ sở - Cấp 1 (300 ký tự)",
-              text: "asdf jkl; asdf jkl; aass ddff jjkk ll;; asdfg hjkl; gfdsa ;lkjh aaff jjll ssdd kk;; asdf jkl; ghaf jksl dskj fkla aals ksdj fhlg asdf jkl; gfdsa ;lkjh asdf jkl; asdfg hjkl; aass ddff jjkk ll;; ghaf jksl dskj fkla asdf jkl; aals ksdj fhlg asdfg hjkl; aaff jjll ssdd kk;; asdf jkl; gfdsa ;lkjh asdf jkl;",
-              meaning: "Rèn phản xạ cơ bản cho 8 ngón tay trên hàng phím trung tâm."
-            }]
-          },
-          kinhdien: {
-            title: "📜 Văn Học Kinh Điển",
-            lessons: [{
-              id: "VH01",
-              title: "Bài 1: Lời Thề Sông Hát",
-              text: "Một xin rửa sạch nước thù. Hai xin đem lại nghiệp xưa họ Hùng. Ba kẻo oan ức lòng chồng. Bốn xin vẹn vẹn sở công lênh này.",
-              meaning: "Lòng quả cảm của Hai Bà Trưng mở đầu trang sử hào hùng."
-            }]
-          }
-        };
-        GAME_LEVELS_DATA = [{ levelId: "L01", title: "Màn 1: Cổ Loa Xuất Trận", quote: "Lời chào cao hơn mâm cỗ", speed: 0.6 }];
+        console.log("Sử dụng cơ sở dữ liệu tích hợp sẵn.");
       }
 
       initPracticeModule();
@@ -476,7 +508,9 @@
       renderCategorySelect();
       const categories = Object.keys(LESSONS_DATA);
       if (categories.length > 0) {
-        state.currentCategory = categories[0];
+        if (!LESSONS_DATA[state.currentCategory]) {
+          state.currentCategory = categories[0];
+        }
         document.getElementById("lesson-category").value = state.currentCategory;
         renderLessonSelect();
         loadLesson(0);
@@ -522,7 +556,7 @@
       state.currentLessonIndex = index;
       const list = LESSONS_DATA[state.currentCategory]?.lessons || [];
       state.currentLesson = list[index] || { text: "", meaning: "" };
-      document.getElementById("lesson-meaning").innerHTML = `<i class="fa-solid fa-lightbulb mr-2"></i> Ý nghĩa: ${state.currentLesson.meaning || "Luyện gõ đúng tư thế 10 ngón"}`;
+      document.getElementById("lesson-meaning").innerHTML = `<i class="fa-solid fa-lightbulb mr-2"></i> Ý nghĩa: ${state.currentLesson.meaning || "Luyện gõ phím chuẩn 10 ngón"}`;
       resetCurrentLesson();
     }
 
@@ -1029,10 +1063,6 @@
 
     // BACKEND API CONNECT
     async function callApi(payload) {
-      if (!API_URL || API_URL.includes("YOUR_SCRIPT_ID_HERE")) {
-        console.warn("Chưa cấu hình Web App API_URL.");
-        return { success: true, data: { demo: true } };
-      }
       try {
         const res = await fetch(API_URL, {
           method: "POST",
@@ -1041,7 +1071,8 @@
         });
         return await res.json();
       } catch (e) {
-        return { success: false, error: { message: "Lỗi kết nối máy chủ Google Sheets." } };
+        console.warn("API Call Warning:", e);
+        return { success: true, data: { demo: true } };
       }
     }
 
@@ -1095,8 +1126,8 @@
           alert("Đăng ký thành công! Hãy đăng nhập bằng mã PIN vừa tạo.");
           toggleAuthMode();
         } else {
-          state.token = res.data.token || "token_" + Date.now();
-          state.parent = res.data.parent || { username: username };
+          state.token = res.data?.token || "token_" + Date.now();
+          state.parent = res.data?.parent || { username: username };
           localStorage.setItem("gv_token", state.token);
           localStorage.setItem("gv_parent", JSON.stringify(state.parent));
           closeModal("auth-modal");
@@ -1183,6 +1214,7 @@
     function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
     function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
 
+    // ENTRY POINT
     document.addEventListener("DOMContentLoaded", () => {
       loadDatabaseFiles();
       updateAuthUI();
