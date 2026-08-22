@@ -1,0 +1,32 @@
+[
+  {
+    "levelId": "L01",
+    "title": "Màn 1: Cổ Loa Xuất Trận",
+    "quote": "Lời chào cao hơn mâm cỗ",
+    "speed": 0.6
+  },
+  {
+    "levelId": "L02",
+    "title": "Màn 2: Rèn Đức Luyện Tài",
+    "quote": "Học đi đôi với hành rèn đức luyện tài",
+    "speed": 0.8
+  },
+  {
+    "levelId": "L03",
+    "title": "Màn 3: Uống Nước Nhớ Nguồn",
+    "quote": "Uống nước nhớ nguồn ăn quả nhớ kẻ trồng cây",
+    "speed": 1.0
+  },
+  {
+    "levelId": "L04",
+    "title": "Màn 4: Tôn Sư Trọng Đạo",
+    "quote": "Muốn sang thì bắc cầu Kiều muốn con hay chữ thì yêu lấy thầy",
+    "speed": 1.2
+  },
+  {
+    "levelId": "L05",
+    "title": "Màn 5: Tình Cảm Gia Đình",
+    "quote": "Anh em như thể tay chân rách lành đùm bọc dở hay đỡ đần",
+    "speed": 1.4
+  }
+]
