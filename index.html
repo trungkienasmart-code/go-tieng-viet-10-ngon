@@ -107,7 +107,8 @@
       <div id="lesson-meaning" class="mb-4 text-xs font-bold px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg inline-flex items-center">
         <i class="fa-solid fa-lightbulb mr-2"></i> Ý nghĩa: Đang tải...
       </div>
-      <div id="text-display" class="text-2xl leading-relaxed font-semibold tracking-wide select-none min-h-[110px] p-4 bg-slate-50 rounded-xl border border-slate-200 break-words">
+      <!-- Khung hiển thị cố định chiều cao 3 dòng, ẩn thanh cuộn và tự trôi chữ -->
+      <div id="text-display" class="text-2xl leading-relaxed font-semibold tracking-wide select-none h-[115px] overflow-hidden p-4 bg-slate-50 rounded-xl border border-slate-200 break-words relative scroll-smooth">
       </div>
       <input type="text" id="typing-input" class="opacity-0 absolute -z-10">
       
@@ -623,7 +624,11 @@
         charEl.className = "char-correct";
         state.typedIndex++;
         if (state.typedIndex < text.length) {
-          document.getElementById(`char-${state.typedIndex}`).className = "char-current";
+          const nextCharEl = document.getElementById(`char-${state.typedIndex}`);
+          nextCharEl.className = "char-current";
+          
+          // Tự động cuộn mượt dòng chữ đang gõ lên vị trí giữa khung nhìn
+          nextCharEl.scrollIntoView({ behavior: "smooth", block: "center" });
         }
       } else if (key.length === 1) {
         state.errorsCount++;
