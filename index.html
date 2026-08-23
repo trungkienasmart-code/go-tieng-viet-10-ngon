@@ -599,6 +599,11 @@
             !document.getElementById("add-child-modal").classList.contains("hidden")) return;
         if (e.key === "Tab" || e.key === "Alt" || e.key === "Control") return;
 
+        // CHẶN HÀNH VI CUỘN TRANG CỦA PHÍM SPACE
+        if (e.key === " ") {
+          e.preventDefault();
+        }
+
         handlePracticeKeyPress(e.key);
       });
     }
@@ -971,37 +976,101 @@
       }
     }
 
-    function setupGameInputListeners() {
-      gameInputEl.addEventListener("input", () => {
-        if (isGameOverState || gameIsJammed) return;
-        const typed = cleanVietnamese(gameInputEl.value.trim());
-        if (!typed || gameTargetIdx >= gameWordChain.length) return;
+    // ================= 1. BỘ GIẢI MÃ TELEX THUẦN CHO GAME =================
+    const GameTelex = {
+      tones: {
+        'a': { s: 'á', f: 'à', r: 'ả', x: 'ã', j: 'ạ' },
+        'ă': { s: 'ắ', f: 'ằ', r: 'ẳ', x: 'ẵ', j: 'ặ' },
+        'â': { s: 'ấ', f: 'ầ', r: 'ẩ', x: 'ẫ', j: 'ậ' },
+        'e': { s: 'é', f: 'è', r: 'ẻ', x: 'ẽ', j: 'ẹ' },
+        'ê': { s: 'ế', f: 'ề', r: 'ể', x: 'ễ', j: 'ệ' },
+        'i': { s: 'í', f: 'ì', r: 'ỉ', x: 'ĩ', j: 'ị' },
+        'o': { s: 'ó', f: 'ò', r: 'ỏ', x: 'õ', j: 'ọ' },
+        'ô': { s: 'ố', f: 'ồ', r: 'ổ', x: 'ỗ', j: 'ộ' },
+        'ơ': { s: 'ớ', f: 'ờ', r: 'ở', x: 'ỡ', j: 'ợ' },
+        'u': { s: 'ú', f: 'ù', r: 'ủ', x: 'ũ', j: 'ụ' },
+        'ư': { s: 'ứ', f: 'ừ', r: 'ử', x: 'ữ', j: 'ự' },
+        'y': { s: 'ý', f: 'ỳ', r: 'ỷ', x: 'ỹ', j: 'ỵ' }
+      },
+      parse(raw) {
+        let str = raw.toLowerCase()
+          .replace(/aa/g, 'â').replace(/ee/g, 'ê').replace(/oo/g, 'ô')
+          .replace(/aw/g, 'ă').replace(/ow/g, 'ơ').replace(/uw/g, 'ư')
+          .replace(/dd/g, 'đ');
 
-        const cur = gameWordChain[gameTargetIdx];
-        if (typed === cur.cleanText) {
-          fireGameCannon(gameTargetIdx);
-          gameStats.correctWords++;
-          gameStats.totalInputs++;
-          gameFailStreak = 0;
-          gameInputEl.value = "";
+        const markKeys = ['s', 'f', 'r', 'x', 'j'];
+        for (let m of markKeys) {
+          if (str.endsWith(m)) {
+            const base = str.slice(0, -1);
+            for (let i = base.length - 1; i >= 0; i--) {
+              const char = base[i];
+              if (this.tones[char] && this.tones[char][m]) {
+                return base.substring(0, i) + this.tones[char][m] + base.substring(i + 1);
+              }
+            }
+          }
         }
-      });
+        return str;
+      }
+    };
 
-      gameInputEl.addEventListener("keydown", (e) => {
+    let gameRawBuffer = "";
+
+    // ================= 2. HÀM BẮT PHÍM MỚI (TỰ NHẬN DIỆN TELEX) =================
+    function setupGameInputListeners() {
+      window.addEventListener("keydown", (e) => {
+        if (currentView !== "game" || isGameOverState) return;
+
+        // Chặn cuộn trang khi ấn Space
+        if (e.key === " ") e.preventDefault();
+
+        // Xử lý khi bị hóc đạn
         if (gameIsJammed) {
           if (e.key === " " || e.key === "Enter" || e.key === "Backspace") {
             gameIsJammed = false;
             gameFailStreak = 0;
-            gameInputEl.value = "";
+            gameRawBuffer = "";
             document.getElementById("jammed-banner").classList.add("hidden");
+            updateGameInputUI("");
           }
           return;
         }
 
-        if (e.key === "Enter" || e.key === " ") {
-          const typed = cleanVietnamese(gameInputEl.value.trim());
+        // Xóa ký tự gõ lùi (Backspace)
+        if (e.key === "Backspace") {
+          gameRawBuffer = gameRawBuffer.slice(0, -1);
+          const converted = GameTelex.parse(gameRawBuffer);
+          updateGameInputUI(converted);
+          return;
+        }
+
+        // Bắt phím ký tự gõ vào (tự ghép dấu Telex)
+        if (e.key.length === 1 && /[a-zA-Z0-9_]/.test(e.key)) {
+          gameRawBuffer += e.key.toLowerCase();
+          const parsedWord = GameTelex.parse(gameRawBuffer);
+          updateGameInputUI(parsedWord);
+
+          if (gameTargetIdx < gameWordChain.length) {
+            const cur = gameWordChain[gameTargetIdx];
+
+            // Khớp đúng từ mục tiêu -> Tự động bắn đạn
+            if (parsedWord === cur.cleanText) {
+              fireGameCannon(gameTargetIdx);
+              gameStats.correctWords++;
+              gameStats.totalInputs++;
+              gameFailStreak = 0;
+              gameRawBuffer = "";
+              updateGameInputUI("");
+            }
+          }
+        }
+
+        // Xử lý khi nhấn Space hoặc Enter mà gõ sai
+        if (e.key === " " || e.key === "Enter") {
+          const parsedWord = GameTelex.parse(gameRawBuffer);
           const cur = gameWordChain[gameTargetIdx];
-          if (typed && typed !== cur?.cleanText) {
+
+          if (parsedWord && parsedWord !== cur?.cleanText) {
             gameStats.errors++;
             gameStats.totalInputs++;
             gameFailStreak++;
@@ -1010,13 +1079,21 @@
               document.getElementById("jammed-banner").classList.remove("hidden");
             }
           }
-          if (e.key === " ") setTimeout(() => gameInputEl.value = "", 10);
+          gameRawBuffer = "";
+          updateGameInputUI("");
         }
 
         const tot = gameStats.totalInputs || 1;
         const acc = Math.max(0, Math.round(((tot - gameStats.errors) / tot) * 100));
         document.getElementById("game-ui-accuracy").innerText = `${acc}%`;
       });
+    }
+
+    function updateGameInputUI(text) {
+      const inputDisplay = document.getElementById("game-input");
+      if (inputDisplay) {
+        inputDisplay.value = text;
+      }
     }
 
     function fireGameCannon(targetIdx) {
