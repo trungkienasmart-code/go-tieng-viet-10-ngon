@@ -202,6 +202,8 @@
   <main id="view-game" class="max-w-4xl mx-auto px-4 py-4 flex-1 w-full hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between shadow-lg mb-3">
       <div class="flex items-center space-x-3">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between shadow-lg mb-3">
+      <div class="flex items-center space-x-3">
         <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-slate-950 font-black text-xl shadow-md">
           <i class="fa-solid fa-crosshairs"></i>
         </div>
@@ -210,11 +212,20 @@
           <p class="text-xs text-slate-400 font-bold" id="game-level-title">Màn 1: Cổ Loa Xuất Trận</p>
         </div>
       </div>
+
+      <!-- Thanh máu và Thống kê -->
       <div class="flex items-center space-x-6 text-center">
-        <div>
-          <span class="text-xs text-slate-400 block font-bold">Mạng</span>
-          <div id="game-ui-lives" class="text-amber-500 text-lg font-black">❤️❤️❤️</div>
+        <!-- Vạch máu Graphic HP Bar -->
+        <div class="w-36 text-left">
+          <div class="flex justify-between text-xs font-bold text-slate-400 mb-1">
+            <span>ĐỘ BỀN THÀNH</span>
+            <span id="game-ui-hp-text" class="text-emerald-400 font-black">100%</span>
+          </div>
+          <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-700">
+            <div id="game-ui-hp-bar" class="bg-emerald-500 h-full w-full transition-all duration-300"></div>
+          </div>
         </div>
+
         <div class="w-px h-8 bg-slate-800"></div>
         <div>
           <span class="text-xs text-slate-400 block font-bold">Điểm số</span>
@@ -228,9 +239,10 @@
       </div>
     </div>
 
-    <div class="bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-xl mb-3 flex items-center shadow-inner">
-      <span class="text-xs font-black text-amber-500 uppercase mr-3 whitespace-nowrap"><i class="fa-solid fa-book-open mr-1"></i> Trọn câu:</span>
-      <div id="game-sentence-display" class="flex flex-wrap gap-2 text-sm font-extrabold tracking-wide"></div>
+<!-- Khung Trọn câu cố định 3 dòng và tự động trôi chữ theo nhịp bắn -->
+    <div class="bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-xl mb-3 flex items-start shadow-inner">
+      <span class="text-xs font-black text-amber-500 uppercase mr-3 whitespace-nowrap mt-1"><i class="fa-solid fa-book-open mr-1"></i> Trọn câu:</span>
+      <div id="game-sentence-display" class="flex flex-wrap gap-2 text-sm font-extrabold tracking-wide h-[76px] overflow-hidden scroll-smooth relative w-full"></div>
     </div>
 
     <div class="relative flex flex-col items-center">
@@ -745,19 +757,134 @@
       }
     }
 
-    // MINI GAME THẦN CÔNG
+    // ================= SOUND & MUSIC SYNTHESIZER (WEB AUDIO API) =================
+    let audioCtx = null;
+    let bgMusicPlaying = false;
+    let bgMusicInterval = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    const SoundFX = {
+      // 1. Tiếng bắn đạn thần công
+      playShoot() {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      },
+
+      // 2. Tiếng nổ trúng mục tiêu
+      playHit() {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.2);
+      },
+
+      // 3. Tiếng hóc đạn (kẹt phím)
+      playJam() {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(80, audioCtx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.18);
+      },
+
+      // 4. Tiếng bom nổ oanh tạc ụ súng khi gõ sai/hụt từ
+      playExplosion() {
+        initAudio();
+        const node = audioCtx.createBufferSource();
+        const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.5, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < buffer.length; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.15));
+        }
+        node.buffer = buffer;
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        node.connect(gain);
+        gain.connect(audioCtx.destination);
+        node.start();
+      },
+
+      // 5. Nhịp trống trận hào hùng không lời
+      startEpicDrums() {
+        if (bgMusicPlaying) return;
+        initAudio();
+        bgMusicPlaying = true;
+        let step = 0;
+        bgMusicInterval = setInterval(() => {
+          if (!bgMusicPlaying || currentView !== "game" || isGameOverState) return;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          // Nhịp trống dồn dập (thùng... thình thình)
+          const freq = (step % 4 === 0) ? 90 : (step % 2 === 0 ? 120 : 70);
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.2);
+          gain.gain.setValueAtTime((step % 4 === 0) ? 0.25 : 0.15, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.2);
+          step++;
+        }, 320);
+      },
+
+      stopEpicDrums() {
+        bgMusicPlaying = false;
+        clearInterval(bgMusicInterval);
+      }
+    };
+
+    // ================= MINI GAME ENGINE WITH GRAPHICS & HP =================
     let gameCanvas, gameCtx, gameInputEl;
     let gameAnimationId = null;
     let gameCurrentLevelIdx = 0;
     let gameWordChain = [];
     let gameTargetIdx = 0;
     let gameBullets = [];
+    let gameFallingBombs = []; // Hiệu ứng bom/từ rơi xuống ụ súng
     let gameParticles = [];
     let gameScore = 0;
-    let gameLives = 3;
+    let gameMaxHP = 100;
+    let gameCurrentHP = 100;
     let gameIsJammed = false;
     let gameFailStreak = 0;
     let isGameOverState = false;
+    let screenShakeTime = 0;
     let gameStats = { correctWords: 0, totalInputs: 0, errors: 0, startTime: null };
 
     function initGameModule() {
@@ -767,10 +894,12 @@
 
       setupGameInputListeners();
       startGameLevel(0);
+      SoundFX.startEpicDrums();
       runGameLoop();
     }
 
     function stopGameLoop() {
+      SoundFX.stopEpicDrums();
       if (gameAnimationId) {
         cancelAnimationFrame(gameAnimationId);
         gameAnimationId = null;
@@ -790,17 +919,21 @@
         text: w,
         cleanText: cleanVietnamese(w),
         x: startX + (i * spacing),
-        y: 80,
+        y: 70,
         isBomb: i % 4 === 3 && lvlIdx > 0,
         hit: false,
         width: 100,
-        height: 40
+        height: 38
       }));
 
       gameTargetIdx = 0;
       gameBullets = [];
+      gameFallingBombs = [];
       gameParticles = [];
       isGameOverState = false;
+      gameCurrentHP = 100;
+      updateHPBarUI();
+
       gameStats = { correctWords: 0, totalInputs: 0, errors: 0, startTime: new Date() };
 
       renderGameSentenceUI();
@@ -831,9 +964,15 @@
       gameWordChain.forEach((_, idx) => {
         const badge = document.getElementById(`g-word-${idx}`);
         if (badge) {
-          if (idx < gameTargetIdx) badge.className = "text-emerald-400 line-through opacity-60";
-          else if (idx === gameTargetIdx) badge.className = "text-amber-300 bg-amber-500/30 px-2 py-0.5 rounded border border-amber-400";
-          else badge.className = "text-slate-400";
+          if (idx < gameTargetIdx) {
+            badge.className = "text-emerald-400 line-through opacity-60";
+          } else if (idx === gameTargetIdx) {
+            badge.className = "text-amber-300 bg-amber-500/30 px-2 py-0.5 rounded border border-amber-400";
+            // Tự động cuộn mượt dòng chữ trong khung Trọn câu
+            badge.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+          } else {
+            badge.className = "text-slate-400";
+          }
         }
       });
 
@@ -849,14 +988,26 @@
     function runGameLoop() {
       if (currentView !== "game") return;
 
-      gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+      gameCtx.save();
+      // Hiệu ứng rung màn hình khi trúng sát thương
+      if (screenShakeTime > 0) {
+        const shakeX = (Math.random() - 0.5) * 8;
+        const shakeY = (Math.random() - 0.5) * 8;
+        gameCtx.translate(shakeX, shakeY);
+        screenShakeTime--;
+      }
+
+      gameCtx.clearRect(-10, -10, gameCanvas.width + 20, gameCanvas.height + 20);
+
       drawGameWordChain();
       drawGameCannon();
       drawGameBullets();
+      drawFallingBombs();
       drawGameParticles();
 
       if (!isGameOverState) updateGamePhysics();
 
+      gameCtx.restore();
       gameAnimationId = requestAnimationFrame(runGameLoop);
     }
 
@@ -876,12 +1027,12 @@
         }
         gameCtx.lineWidth = idx === gameTargetIdx ? 3 : 1.5;
         gameCtx.beginPath();
-        gameCtx.roundRect(item.x - 50, item.y - 20, item.width, item.height, [10]);
+        gameCtx.roundRect(item.x - 50, item.y - 19, item.width, item.height, [8]);
         gameCtx.fill();
         gameCtx.stroke();
 
         gameCtx.fillStyle = "#ffffff";
-        gameCtx.font = idx === gameTargetIdx ? "bold 16px Nunito" : "600 14px Nunito";
+        gameCtx.font = idx === gameTargetIdx ? "bold 15px Nunito" : "600 13px Nunito";
         gameCtx.textAlign = "center";
         gameCtx.textBaseline = "middle";
         gameCtx.fillText(item.isBomb ? `💣 ${item.text}` : item.text, item.x, item.y);
@@ -891,7 +1042,7 @@
 
     function drawGameCannon() {
       const cannonX = 80;
-      const cannonY = gameCanvas.height - 50;
+      const cannonY = gameCanvas.height - 45;
       gameCtx.save();
       gameCtx.translate(cannonX, cannonY);
 
@@ -902,10 +1053,12 @@
       }
       gameCtx.rotate(angle);
 
+      // Nòng súng
       gameCtx.fillStyle = gameIsJammed ? "#ef4444" : "#f59e0b";
-      gameCtx.fillRect(0, -12, 50, 24);
+      gameCtx.fillRect(0, -11, 48, 22);
       gameCtx.restore();
 
+      // Bệ súng
       gameCtx.fillStyle = "#78350f";
       gameCtx.beginPath();
       gameCtx.arc(cannonX, cannonY, 20, 0, Math.PI * 2);
@@ -916,22 +1069,63 @@
       const speed = GAME_LEVELS_DATA[gameCurrentLevelIdx]?.speed || 0.6;
       gameWordChain.forEach(item => { if (!item.hit) item.x -= speed; });
 
+      // Khi từ vượt qua khỏi màn hình bên trái
       if (gameTargetIdx < gameWordChain.length) {
         const cur = gameWordChain[gameTargetIdx];
         if (cur.x < 40) {
-          if (!cur.isBomb) takeGameDamage();
+          if (!cur.isBomb) {
+            // Rơi bom xuống ụ súng
+            spawnFallingBomb(cur.x, cur.y, cur.text);
+          }
+          cur.hit = true;
           gameTargetIdx++;
           updateGameTargetUI();
           checkGameCompletion();
         }
       }
+
+      // Xử lý quỹ đạo bom rơi xuống ụ súng
+      const cannonX = 80;
+      const cannonY = gameCanvas.height - 45;
+      for (let i = gameFallingBombs.length - 1; i >= 0; i--) {
+        const fb = gameFallingBombs[i];
+        fb.x += (cannonX - fb.x) * 0.08;
+        fb.y += (cannonY - fb.y) * 0.08 + 2;
+
+        if (Math.hypot(fb.x - cannonX, fb.y - cannonY) < 25) {
+          createGameExplosion(cannonX, cannonY, "#ef4444");
+          SoundFX.playExplosion();
+          screenShakeTime = 12;
+          applyDamage(25); // Trừ 25% máu
+          gameFallingBombs.splice(i, 1);
+        }
+      }
+    }
+
+    function spawnFallingBomb(x, y, text) {
+      gameFallingBombs.push({ x: x, y: y, text: text });
+    }
+
+    function drawFallingBombs() {
+      gameFallingBombs.forEach(fb => {
+        gameCtx.save();
+        gameCtx.fillStyle = "#dc2626";
+        gameCtx.beginPath();
+        gameCtx.arc(fb.x, fb.y, 14, 0, Math.PI * 2);
+        gameCtx.fill();
+        gameCtx.fillStyle = "#ffffff";
+        gameCtx.font = "bold 10px Nunito";
+        gameCtx.textAlign = "center";
+        gameCtx.fillText("💣", fb.x, fb.y + 3);
+        gameCtx.restore();
+      });
     }
 
     function drawGameBullets() {
       for (let i = gameBullets.length - 1; i >= 0; i--) {
         const b = gameBullets[i];
-        b.x += Math.cos(b.angle) * 18;
-        b.y += Math.sin(b.angle) * 18;
+        b.x += Math.cos(b.angle) * 20;
+        b.y += Math.sin(b.angle) * 20;
 
         gameCtx.fillStyle = "#fbbf24";
         gameCtx.beginPath();
@@ -946,8 +1140,10 @@
             gameBullets.splice(i, 1);
 
             if (target.isBomb) {
-              takeGameDamage();
+              SoundFX.playExplosion();
+              applyDamage(20);
             } else {
+              SoundFX.playHit();
               gameScore += 100;
               document.getElementById("game-ui-score").innerText = gameScore;
             }
@@ -961,11 +1157,11 @@
     }
 
     function createGameExplosion(x, y, color) {
-      for (let i = 0; i < 15; i++) {
+      for (let i = 0; i < 18; i++) {
         gameParticles.push({
           x, y,
-          vx: (Math.random() - 0.5) * 6,
-          vy: (Math.random() - 0.5) * 6,
+          vx: (Math.random() - 0.5) * 8,
+          vy: (Math.random() - 0.5) * 8,
           radius: Math.random() * 4 + 2,
           color,
           alpha: 1
@@ -991,36 +1187,45 @@
       }
     }
 
-    function takeGameDamage() {
-      gameLives--;
-      document.getElementById("game-ui-lives").innerText = "❤️".repeat(Math.max(0, gameLives));
-      if (gameLives <= 0) finishGameSession(false);
+    function applyDamage(amount) {
+      gameCurrentHP = Math.max(0, gameCurrentHP - amount);
+      updateHPBarUI();
+      if (gameCurrentHP <= 0) {
+        finishGameSession(false);
+      }
+    }
+
+    function updateHPBarUI() {
+      const bar = document.getElementById("game-ui-hp-bar");
+      const text = document.getElementById("game-ui-hp-text");
+      if (bar && text) {
+        text.innerText = `${gameCurrentHP}%`;
+        bar.style.width = `${gameCurrentHP}%`;
+        if (gameCurrentHP > 50) {
+          bar.className = "bg-emerald-500 h-full transition-all duration-300";
+        } else if (gameCurrentHP > 25) {
+          bar.className = "bg-amber-500 h-full transition-all duration-300";
+        } else {
+          bar.className = "bg-red-500 h-full transition-all duration-300 animate-pulse";
+        }
+      }
     }
 
     function checkGameCompletion() {
-      if (gameTargetIdx >= gameWordChain.length && gameLives > 0) {
+      if (gameTargetIdx >= gameWordChain.length && gameCurrentHP > 0) {
         finishGameSession(true);
       }
     }
 
-    // ================= XỬ LÝ GÕ TIẾNG VIỆT QUA UNIKEY / EVKEY =================
     function setupGameInputListeners() {
-      // 1. Tự động focus vào ô nhập khi chuyển sang tab Game
-      if (gameInputEl) {
-        gameInputEl.focus();
-      }
+      if (gameInputEl) gameInputEl.focus();
 
-      // 2. Lắng nghe trực tiếp từ Unikey/EVKey gõ vào ô Input
       gameInputEl.addEventListener("input", () => {
         if (isGameOverState || gameIsJammed) return;
-
-        const rawVal = gameInputEl.value.trim();
-        const typed = cleanVietnamese(rawVal);
+        const typed = cleanVietnamese(gameInputEl.value.trim());
         if (!typed || gameTargetIdx >= gameWordChain.length) return;
 
         const cur = gameWordChain[gameTargetIdx];
-
-        // Gõ đúng từ mục tiêu -> Bắn đạn và xóa trắng ô nhập
         if (typed === cur.cleanText) {
           fireGameCannon(gameTargetIdx);
           gameStats.correctWords++;
@@ -1030,9 +1235,7 @@
         }
       });
 
-      // 3. Xử lý các phím đặc biệt (Space / Enter / Backspace)
       gameInputEl.addEventListener("keydown", (e) => {
-        // Cơ chế thông nòng khi bị hóc đạn
         if (gameIsJammed) {
           if (e.key === " " || e.key === "Enter" || e.key === "Backspace") {
             gameIsJammed = false;
@@ -1043,43 +1246,36 @@
           return;
         }
 
-        // Khi bấm Space hoặc Enter mà từ gõ bị sai -> Tính lỗi hóc đạn
         if (e.key === "Enter" || e.key === " ") {
           const typed = cleanVietnamese(gameInputEl.value.trim());
           const cur = gameWordChain[gameTargetIdx];
-
           if (typed && typed !== cur?.cleanText) {
             gameStats.errors++;
             gameStats.totalInputs++;
             gameFailStreak++;
+            SoundFX.playJam();
+
+            // Nếu gõ sai từ -> Bom rơi tấn công
+            spawnFallingBomb(cur ? cur.x : canvas.width / 2, 70, typed);
+
             if (gameFailStreak >= 3) {
               gameIsJammed = true;
               document.getElementById("jammed-banner").classList.remove("hidden");
             }
           }
-
-          if (e.key === " ") {
-            setTimeout(() => { gameInputEl.value = ""; }, 10);
-          }
+          if (e.key === " ") setTimeout(() => gameInputEl.value = "", 10);
         }
 
-        // Cập nhật tỷ lệ chính xác
         const tot = gameStats.totalInputs || 1;
         const acc = Math.max(0, Math.round(((tot - gameStats.errors) / tot) * 100));
         document.getElementById("game-ui-accuracy").innerText = `${acc}%`;
       });
     }
 
-    function updateGameInputUI(text) {
-      const inputDisplay = document.getElementById("game-input");
-      if (inputDisplay) {
-        inputDisplay.value = text;
-      }
-    }
-
     function fireGameCannon(targetIdx) {
+      SoundFX.playShoot();
       const cannonX = 80;
-      const cannonY = gameCanvas.height - 50;
+      const cannonY = gameCanvas.height - 45;
       const target = gameWordChain[targetIdx];
       const angle = Math.atan2(target.y - cannonY, target.x - cannonX);
       gameBullets.push({
@@ -1092,12 +1288,13 @@
 
     async function finishGameSession(isWin) {
       isGameOverState = true;
+      SoundFX.stopEpicDrums();
       const elapsedSecs = Math.max(1, Math.floor((new Date() - gameStats.startTime) / 1000));
       const wpm = Math.round((gameStats.correctWords * 5) / (elapsedSecs / 60));
       const tot = gameStats.totalInputs || 1;
       const acc = Math.max(0, Math.round(((tot - gameStats.errors) / tot) * 100));
 
-      alert(isWin ? `🎉 CHIẾN THẮNG MÀN CHƠI!\nTốc độ: ${wpm} WPM\nĐộ chính xác: ${acc}%` : "💥 THẤT BẠI! Bé hãy bình tĩnh luyện lại nhé!");
+      alert(isWin ? `🎉 CHIẾN THẮNG MÀN CHƠI!\nTốc độ: ${wpm} WPM\nĐộ chính xác: ${acc}%` : "💥 THẤT BẠI! Thành lũy đã bị phá hủy!");
 
       if (state.token && state.activeChildId) {
         await callApi({
