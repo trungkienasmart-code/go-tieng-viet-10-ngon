@@ -22,7 +22,7 @@
 
   <!-- HEADER -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('practice')">
         <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md font-bold text-xl">
           <i class="fa-solid fa-keyboard"></i>
@@ -69,8 +69,8 @@
   </header>
 
   <!-- VIEW 1: PRACTICE -->
-  <main id="view-practice" class="max-w-5xl mx-auto px-4 py-6 flex-1 w-full">
-    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center justify-between gap-4">
+  <main id="view-practice" class="max-w-5xl mx-auto px-4 py-3 flex-1 w-full">
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mb-3 flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center space-x-4">
         <div>
           <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chủ đề bài học</label>
@@ -198,77 +198,80 @@
     </div>
   </main>
 
-  <!-- VIEW 2: GAME -->
-  <main id="view-game" class="max-w-4xl mx-auto px-4 py-4 flex-1 w-full hidden">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between shadow-lg mb-3">
-      <div class="flex items-center space-x-3">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between shadow-lg mb-3">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-slate-950 font-black text-xl shadow-md">
+  <!-- ================= VIEW 2: GAME THẦN CÔNG (GỌN GÀNG 1 MÀN HÌNH) ================= -->
+  <main id="view-game" class="max-w-4xl mx-auto px-2 py-1 flex-1 w-full hidden flex flex-col justify-center">
+    
+    <!-- 1. TẦNG TRÊN CÙNG: THANH TRẠNG THÁI & MÁU -->
+    <div class="bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 flex items-center justify-between shadow mb-2 w-full">
+      <div class="flex items-center space-x-2">
+        <div class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-slate-950 font-black text-sm">
           <i class="fa-solid fa-crosshairs"></i>
         </div>
         <div>
-          <h2 class="text-base font-black text-amber-400 leading-tight">Thần Công Luyện Chữ</h2>
-          <p class="text-xs text-slate-400 font-bold" id="game-level-title">Màn 1: Cổ Loa Xuất Trận</p>
+          <h2 class="text-sm font-black text-amber-400 leading-tight">Thần Công Luyện Chữ</h2>
+          <p class="text-[11px] text-slate-400 font-bold" id="game-level-title">Màn 1: Cổ Loa Xuất Trận</p>
         </div>
       </div>
 
-      <!-- Thanh máu và Thống kê -->
-      <div class="flex items-center space-x-6 text-center">
-        <!-- Vạch máu Graphic HP Bar -->
-        <div class="w-36 text-left">
-          <div class="flex justify-between text-xs font-bold text-slate-400 mb-1">
+      <div class="flex items-center space-x-4 text-center">
+        <!-- Vạch máu -->
+        <div class="w-32 text-left">
+          <div class="flex justify-between text-[10px] font-bold text-slate-400 mb-0.5">
             <span>ĐỘ BỀN THÀNH</span>
             <span id="game-ui-hp-text" class="text-emerald-400 font-black">100%</span>
           </div>
-          <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-700">
+          <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-700">
             <div id="game-ui-hp-bar" class="bg-emerald-500 h-full w-full transition-all duration-300"></div>
           </div>
         </div>
 
-        <div class="w-px h-8 bg-slate-800"></div>
+        <div class="w-px h-6 bg-slate-800"></div>
         <div>
-          <span class="text-xs text-slate-400 block font-bold">Điểm số</span>
-          <div id="game-ui-score" class="text-xl font-black text-emerald-400">0</div>
+          <span class="text-[10px] text-slate-400 block font-bold">Điểm</span>
+          <div id="game-ui-score" class="text-base font-black text-emerald-400">0</div>
         </div>
-        <div class="w-px h-8 bg-slate-800"></div>
+        <div class="w-px h-6 bg-slate-800"></div>
         <div>
-          <span class="text-xs text-slate-400 block font-bold">Chính xác</span>
-          <div id="game-ui-accuracy" class="text-xl font-black text-indigo-400">100%</div>
+          <span class="text-[10px] text-slate-400 block font-bold">Chính xác</span>
+          <div id="game-ui-accuracy" class="text-base font-black text-indigo-400">100%</div>
         </div>
       </div>
     </div>
 
-<!-- Khung Trọn câu cố định 3 dòng và tự động trôi chữ theo nhịp bắn -->
-    <div class="bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-xl mb-3 flex items-start shadow-inner">
-      <span class="text-xs font-black text-amber-500 uppercase mr-3 whitespace-nowrap mt-1"><i class="fa-solid fa-book-open mr-1"></i> Trọn câu:</span>
-      <div id="game-sentence-display" class="flex flex-wrap gap-2 text-sm font-extrabold tracking-wide h-[76px] overflow-hidden scroll-smooth relative w-full"></div>
+    <!-- 2. TẦNG 2: CỬA SỔ DÒNG CHỮ TRỌN CÂU (TỰ CUỘN 2 DÒNG) -->
+    <div class="bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-xl mb-2 flex items-start shadow-inner w-full">
+      <span class="text-[11px] font-black text-amber-500 uppercase mr-2 whitespace-nowrap mt-0.5"><i class="fa-solid fa-book-open mr-1"></i> Trọn câu:</span>
+      <div id="game-sentence-display" class="flex flex-wrap gap-1.5 text-xs font-extrabold tracking-wide h-[48px] overflow-hidden scroll-smooth relative w-full"></div>
     </div>
 
-    <div class="relative flex flex-col items-center">
-      <div id="jammed-banner" class="hidden absolute top-6 bg-red-600/95 backdrop-blur-md text-white px-6 py-2 rounded-full font-black text-sm uppercase tracking-widest shadow-2xl animate-pulse z-20 border border-red-300">
-        ⚠️ SÚNG BỊ HÓC! BẤM [SPACE] HOẶC [ENTER] ĐỂ THÔNG NÒNG!
+    <!-- 3. TẦNG 3: CỬA SỔ CANVAS SÚNG THẦN CÔNG -->
+    <div class="relative flex flex-col items-center w-full">
+      <div id="jammed-banner" class="hidden absolute top-4 bg-red-600/95 backdrop-blur-md text-white px-4 py-1 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl animate-pulse z-20 border border-red-300">
+        ⚠️ SÚNG HÓC! BẤM [SPACE] HOẶC [ENTER] ĐỂ THÔNG NÒNG!
       </div>
-      <canvas id="gameCanvas" width="800" height="380" class="rounded-2xl border-2 border-slate-800 shadow-2xl w-full"></canvas>
-      <div class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 mt-3 flex items-center justify-between shadow-xl">
-        <div class="flex items-center space-x-3">
-          <span class="text-xs font-black uppercase text-amber-500 tracking-wider">Mục Tiêu:</span>
-          <div id="ammo-word" class="text-2xl font-black text-white bg-slate-950 px-4 py-1.5 rounded-xl border border-slate-700 tracking-wide">
+      <canvas id="gameCanvas" width="800" height="280" class="rounded-xl border border-slate-800 shadow-xl w-full max-h-[280px]"></canvas>
+
+      <!-- 4. TẦNG DƯỚI CÙNG: HỘP TIẾP ĐẠN & Ô NHẬP LIỆU -->
+      <div class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 mt-2 flex items-center justify-between shadow">
+        <div class="flex items-center space-x-2">
+          <span class="text-[11px] font-black uppercase text-amber-500 tracking-wider">Mục Tiêu:</span>
+          <div id="ammo-word" class="text-lg font-black text-white bg-slate-950 px-3 py-1 rounded-lg border border-slate-700 tracking-wide">
             ---
           </div>
         </div>
-        <div class="flex items-center space-x-3">
+
+        <div class="flex items-center space-x-2">
           <span class="text-xs font-bold text-slate-400">Đang gõ:</span>
           <input type="text" id="game-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" 
                  placeholder="Gõ từ tại đây..." 
-                 class="text-lg font-bold text-emerald-400 bg-slate-950 px-4 py-1.5 rounded-xl border-2 border-indigo-500/50 outline-none focus:border-indigo-400 w-56 text-center">
+                 class="text-base font-bold text-emerald-400 bg-slate-950 px-3 py-1 rounded-lg border border-indigo-500/50 outline-none focus:border-indigo-400 w-48 text-center">
         </div>
       </div>
     </div>
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-white border-t border-slate-200 mt-10 py-6">
+  <footer class="bg-white border-t border-slate-200 mt-2 py-3">
     <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
       <div>
         <p class="font-bold text-slate-800 text-sm">App Tinh Gọn — Giải Pháp Chuyển Đổi Số</p>
@@ -1042,7 +1045,7 @@
 
     function drawGameCannon() {
       const cannonX = 80;
-      const cannonY = gameCanvas.height - 45;
+      const cannonY = gameCanvas.height - 35;
       gameCtx.save();
       gameCtx.translate(cannonX, cannonY);
 
@@ -1086,7 +1089,7 @@
 
       // Xử lý quỹ đạo bom rơi xuống ụ súng
       const cannonX = 80;
-      const cannonY = gameCanvas.height - 45;
+      const cannonY = gameCanvas.height - 35;
       for (let i = gameFallingBombs.length - 1; i >= 0; i--) {
         const fb = gameFallingBombs[i];
         fb.x += (cannonX - fb.x) * 0.08;
@@ -1275,7 +1278,7 @@
     function fireGameCannon(targetIdx) {
       SoundFX.playShoot();
       const cannonX = 80;
-      const cannonY = gameCanvas.height - 45;
+      const cannonY = gameCanvas.height - 35;
       const target = gameWordChain[targetIdx];
       const angle = Math.atan2(target.y - cannonY, target.x - cannonX);
       gameBullets.push({
